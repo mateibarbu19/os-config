@@ -1,0 +1,7 @@
+[[language]]
+name = "haskell"
+indent = { tab-width = 4, unit = "    " }
+
+# hls config docs: https://haskell-language-server.readthedocs.io/en/latest/configuration.html#example-with-settings
+[language-server.haskell-language-server] 
+config.haskell.formattingProvider = "fourmolu" # default is "ormolu"
