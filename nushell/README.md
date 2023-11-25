@@ -2,6 +2,19 @@
 
 See the offical [website](https://www.nushell.sh) for documentation.
 
+Please install the following packages before proceeding:
+    - starship 
+        - is a cross-shell promt
+        - needs a Nerd font
+    - eza
+        - alterantive ls
+        - also needs a Nerd font
+    - batcat
+        - alternative `cat`
+    - fish
+        - for command completions
+        - or carapace (please edit the scripts for this)
+
 1. Pull the configuration files.
     ```sh
     git clone https://github.com/mateibarbu19/os-config ~/os-config
