@@ -1,3 +1,5 @@
+$env.config.show_banner = false
+
 use ~/.cache/starship/init.nu
 
 # Use one of two completers: carapace or fish

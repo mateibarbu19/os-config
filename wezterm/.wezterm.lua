@@ -10,6 +10,9 @@ if wezterm.config_builder then
   config = wezterm.config_builder()
 end
 
+-- Spawn a nu shell in login mode
+-- config.default_prog = { 'nu', '-l' }
+
 -- Change the color scheme.
 config.color_scheme = 'Monokai Remastered'
 
