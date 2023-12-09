@@ -2,4 +2,4 @@
 
 See the [site](https://wezfurlong.org/wezterm/index.html).
 
-Setting default shell to Nu is commented.
+Default shell is set to Nu.

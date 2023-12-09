@@ -20,15 +20,7 @@ let fish_completer = {|spans|
 $env.config.completions.external.completer = $fish_completer
 
 alias pls = eza -l --icons --git
-
-alias bat = ^(
-    if (which ^bat | is-empty) and (not (which ^batcat | is-empty)) {
-        (which ^batcat).path | get 0
-    } else if not (which ^bat | is-empty) { 
-        (which ^bat).path | get 0 
-    } else {
-        error make {msg: "Executable was not found" }
-    })
+# alias bat = batcat
 
 def bathelp [...cmd] {
     let args = ($cmd | skip | str join ' ')
