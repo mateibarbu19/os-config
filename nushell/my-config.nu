@@ -26,3 +26,7 @@ def bathelp [...cmd] {
     let args = ($cmd | skip | str join ' ')
     ^$cmd.0 $args --help | bat --plain --language=help
 }
+
+def different-ls [] {
+    ls | update name {|n| $n | grid -c | str trim --right --char (char newline)}
+}
