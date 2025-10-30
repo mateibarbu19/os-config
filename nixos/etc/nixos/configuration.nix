@@ -2,31 +2,34 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
-
+{
+  config,
+  pkgs,
+  lib,
+  parentArgs,
+  nixOSVersion,
+  ...
+}:
 let
-  unstable = import <nixos-unstable> {
+  unstablePkgs = import parentArgs.unstable {
+    system = pkgs.system;
     config.allowUnfree = true;
   };
-  # nix-software-center = import (pkgs.fetchFromGitHub {
-  #   owner = "snowfallorg";
-  #   repo = "nix-software-center";
-  #   rev = "0.1.2";
-  #   sha256 = "xiqF1mP8wFubdsAQ1BmfjzCgOD3YZf7EGWl9i69FTls=";
-  # }) {};
 in
 {
-  imports =
-    [
-      ./hardware-configuration.nix
-      ./cachix.nix
-    ];
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # Enable important experimental features
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  imports = [
+    ./hardware-configuration.nix
+    ./cachix.nix
+    (import ./main-user.nix {
+      inherit pkgs unstablePkgs;
+      nixOSVersion = nixOSVersion;
+      zen-browser = parentArgs.zen-browser;
+      firefox-addons = parentArgs.firefox-addons;
+    })
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -62,14 +65,26 @@ in
     LC_TIME = "ro_RO.UTF-8";
   };
 
-  fonts.packages = with pkgs; [
-    nerd-fonts.fira-code
-  ];
-
-
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+
+  # Install KDE Connect
+  programs.kdeconnect = {
+    enable = true;
+    package = pkgs.gnomeExtensions.gsconnect;
+  };
+
+  # Esthetic feel on login
+  programs.dconf.profiles.gdm.databases = [
+    {
+      settings = {
+        "org/gnome/desktop/interface" = {
+          "accent-color" = "orange";
+        };
+      };
+    }
+  ];
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -99,88 +114,21 @@ in
     #media-session.enable = true;
   };
 
-
-  # Enable flatpak
-  services.flatpak.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.matei = {
-    # uid = 1000;
-    isNormalUser = true;
-    description = "Matei Barbu";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-      wezterm
-
-      # Version control packages
-      git
-      unstable.gitui
-      delta # also colorful diff
-
-      # A visual software center for NixOS
-      # nix-software-center
-
-      gnome-solanum
-      gnome-pomodoro
-      gcolor3
-      gnomeExtensions.brightness-control-using-ddcutil
-
-      easyeffects
-
-      ffmpeg
-
-      # Disk Usage Analyzer
-      baobab
-      # Tasks and To-Dos with Nextcloud sync
-      planify
-      # Internet Radio
-      shortwave
-
-      # Instant Messaging
-      signal-desktop
-
-      # PDF processing
-      pdftk
-
-      # Office Tools
-      libreoffice-fresh
-
-      # Video Editing
-      kdePackages.kdenlive
-
-      # Programming
-      python313
-      python313Packages.python-lsp-server
-      python313Packages.python-lsp-ruff
-      ruff
-      # python313Packages.jedi-language-server
-
-
-      llvmPackages_latest.clang
-      llvmPackages_latest.clang-tools
-      bear
-      compiledb
-      gnumake
-    ];
-  };
-
+  # TODO: Should this be moved to home manager?
   # Install firefox.
   programs.firefox.enable = true;
   # Install Thunderbird.
   programs.thunderbird.enable = true;
-  # Install KDE Connect
-  programs.kdeconnect = {
-    enable = true;
-    package = pkgs.gnomeExtensions.gsconnect;
-  };
-
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  # NOTE: Most of these are here for the root user...
   environment.systemPackages = with pkgs; [
     # Nix tools
-    home-manager
+    # home-manager
     nil # language server
+    nixd # language server
+    nixfmt-rfc-style # formatter
     cachix # community caches
 
     # TUI work tools for all users
@@ -189,7 +137,7 @@ in
     bat-extras.batman
     eza
     tealdeer
-    unstable.yazi
+    unstablePkgs.yazi
     fzf
     fd
 
@@ -217,13 +165,35 @@ in
     podman-tui # status of containers in the terminal
     podman-compose # start group of containers for dev
     distrobox
-
-    # Online tools
-    ungoogled-chromium
   ];
 
+  # Enable flatpak
+  services = {
+    flatpak = {
+      enable = true;
+
+      # List the Flatpak applications you want to install
+      # Use the official Flatpak application ID (e.g., from flathub.org)
+      # Examples:
+      packages = [
+        "com.github.tchx84.Flatseal" # Manage flatpak permissions - should always have this
+        # "com.rtosta.zapzap"              # WhatsApp client
+        "io.github.flattool.Warehouse" # Manage flatpaks, clean data, remove flatpaks and deps
+        # "it.mijorus.gearlever"           # Manage and support AppImages
+        # "io.github.dvlv.boxbuddyrs"      # Manage distroboxes
+        # "de.schmidhuberj.tubefeeder"     # watch YT videos
+        "de.swsnr.pictureoftheday" # Change my wallpaper based on online sources
+      ];
+
+      # Optional: Automatically update Flatpaks when you run nixos-rebuild switch
+      update.onActivation = true;
+    };
+  };
+
+  home-manager.backupFileExtension = "bkp";
+
   # Set default editor
-  environment.variables.EDITOR = "hx";
+  # environment.variables.EDITOR = "hx";
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -233,8 +203,6 @@ in
   #   enableSSHSupport = true;
   # };
 
-  # List services that you want to enable:
-
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
@@ -243,17 +211,6 @@ in
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-
-  # Monitor testing
-  boot.kernelModules = [ "i2c-dev" ];
-
-  # Disable wakeup from sleep from USB interrupt
-  services.udev.extraRules = ''
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="0bda", ATTRS{idProduct}=="2838", MODE:="0666"
-    KERNEL=="i2c-[0-9]*", GROUP:="users"
-    # ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x8086", ATTR{device}=="0x9d2f", ATTR{power/wakeup}="disabled"
-  '';
-
 
   # Enable common container config files in /etc/containers
   virtualisation.containers.enable = true;
@@ -269,37 +226,6 @@ in
     };
   };
 
-  # fonts.fontconfig.antialias = false;
-  # fonts.fontconfig.subpixel.rgba = "rgb";
-  fonts.fontconfig.subpixel.lcdfilter = "light";
-
-  programs.dconf.profiles.gdm.databases = [{
-    settings = {
-      "org/gnome/desktop/interface" = {
-        "accent-color" = "orange";
-      };
-    };
-  }];
-
-  programs.nautilus-open-any-terminal = {
-    enable = true;
-    terminal = "wezterm";
-  };
-
-  systemd.services.copyGdmMonitorsXml = {
-    description = "Copy monitors.xml to GDM config";
-    after = [ "network.target" "systemd-user-sessions.service" "display-manager.service" ];
-    serviceConfig = {
-      ExecStart = "${pkgs.bash}/bin/bash -c 'echo \"Running copyGdmMonitorsXml service\" && mkdir -p /run/gdm/.config && echo \"Created /run/gdm/.config directory\" && [ \"/home/matei/.config/monitors.xml\" -ef \"/run/gdm/.config/monitors.xml\" ] || cp /home/matei/.config/monitors.xml /run/gdm/.config/monitors.xml && echo \"Copied monitors.xml to /run/gdm/.config/monitors.xml\" && chown gdm:gdm /run/gdm/.config/monitors.xml && echo \"Changed ownership of monitors.xml to gdm\"'";
-      Type = "oneshot";
-    };
-
-    wantedBy = [ "multi-user.target" ];
-  };
-
   # NixOS version
-  system.stateVersion = "25.05";
-
-  # Copy /etc/nixos/configuration.nix to /run/current-system/configuration.nix
-  system.copySystemConfiguration = true;
+  system.stateVersion = nixOSVersion;
 }
