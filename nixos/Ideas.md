@@ -1,0 +1,15 @@
+- Split `main-user.nix`
+- Add multi host support
+- Add multi user support
+- Create a vivid module
+- Declarative extension enabling
+  - In Gnome:
+    - https://nixos.wiki/wiki/GNOME#Managing_extensions
+    - home-manager: programs.gnome-shell.extensions
+  - In Firefox
+- Firefox to be alike to Zen
+- Languages in Firefox
+- PWAs
+  - Discord?
+  - Matrix?
+- VSCode (VSCodium)

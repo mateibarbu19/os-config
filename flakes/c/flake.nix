@@ -19,6 +19,9 @@
         llvmPackages_latest.clang       # matters
         compiledb
         gnumake
+        # bear
+        compiledb
+        gdb
       ];
     };
   };

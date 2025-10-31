@@ -63,11 +63,9 @@ $env.config = {
     }
 }
 
-def myll [dir?:string] {
+def ll [dir?:string] {
     if $dir != null {
         cd $dir
     }
     ls -a | update name {|n| eza --color=always --icons=always --hyperlink -d $n.name } | rename filename
 }
-
-# $env.LS_COLORS = (vivid generate rose-pine-dawn)

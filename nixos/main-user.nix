@@ -5,6 +5,14 @@
   firefox-addons,
   ...
 }@args:
+let
+  rosePineFlavors = pkgs.fetchFromGitHub {
+    owner = "rose-pine";
+    repo = "yazi";
+    rev = "7fe22e1d7f909bc9d0961edbd52deb745e5b0cfc";
+    sha256 = "sha256-zCLGlAX6JOmwcgnNLerSmvhCpYm/PL6JsXBU7Gq2kTI=";
+  };
+in
 {
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.matei = {
@@ -19,7 +27,12 @@
     ];
 
     packages = with pkgs; [
-      wezterm
+      # Always useful
+      man-pages
+
+      # Command line tools
+      ripgrep
+      fd
 
       # Version control packages
       git
@@ -58,31 +71,42 @@
       kdePackages.kdenlive
 
       # Programming
-      python313
-      python313Packages.python-lsp-server
-      python313Packages.python-lsp-ruff
-      ruff
+      # python313
+      # python313Packages.python-lsp-server
+      # python313Packages.python-lsp-ruff
+      # ruff
       # python313Packages.jedi-language-server
 
-      llvmPackages_latest.clang
-      llvmPackages_latest.clang-tools
-      bear
-      compiledb
-      gnumake
-      gdb
+      # llvmPackages_latest.clang
+      # llvmPackages_latest.clang-tools
+      # bear
+      # compiledb
+      # gnumake
+      # gdb
 
       # Online tools
       ungoogled-chromium
     ];
   };
 
+  home-manager.useUserPackages = true;
+  home-manager.useGlobalPkgs = true;
   home-manager.users.matei =
-    { lib, config, pkgs, ... }:
+    {
+      lib,
+      config,
+      pkgs,
+      ...
+    }:
     {
       imports = [
         zen-browser.homeModules.beta
         programs/helix.nix
       ];
+
+      programs.gnome-shell = {
+        enable = true;
+      };
 
       programs.zen-browser = {
         enable = true;
@@ -132,8 +156,8 @@
                     template = "https://search.nixos.org/packages";
                     params = [
                       {
-                        name = "type";
-                        value = "packages";
+                        name = "channel";
+                        value = "${args.nixOSVersion}";
                       }
                       {
                         name = "query";
@@ -153,8 +177,8 @@
                     template = "https://search.nixos.org/options";
                     params = [
                       {
-                        name = "type";
-                        value = "options";
+                        name = "channel";
+                        value = "${args.nixOSVersion}";
                       }
                       {
                         name = "query";
@@ -163,20 +187,23 @@
                     ];
                   }
                 ];
+
+                icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                definedAliases = [ "@no" ];
               };
 
-              "Home Manageer" = {
+              "Home Manager" = {
                 urls = [
                   {
-                    template = "https://home-manager-options.extranix.com/?query=";
+                    template = "https://home-manager-options.extranix.com/";
                     params = [
-                      {
-                        name = "type";
-                        value = "options";
-                      }
                       {
                         name = "query";
                         value = "{searchTerms}";
+                      }
+                      {
+                        name = "release";
+                        value = "release-${args.nixOSVersion}";
                       }
                     ];
                   }
@@ -338,7 +365,7 @@
         enable = true;
         configFile.source = ./programs/config.nu;
         environmentVariables = {
-          LS_COLORS = lib.hm.nushell.mkNushellInline ''(vivid generate rose-pine-dawn)'';
+          LS_COLORS = lib.hm.nushell.mkNushellInline ''vivid generate rose-pine-dawn'';
         };
       };
 
@@ -350,14 +377,23 @@
       programs.yazi = {
         enable = true;
         enableNushellIntegration = true;
+
+        theme = {
+          flavor = {
+            use = "rose-pine-dawn";
+          };
+
+          icon = (builtins.fromTOML (builtins.readFile "${rosePineFlavors}/themes/rose-pine-dawn.toml")).icon;
+        };
+        flavors = {
+          rose-pine-dawn = "${rosePineFlavors}/flavors/rose-pine-dawn.yazi";
+        };
       };
 
       # Fetch the Delta themes.gitconfig from GitHub
-      home.file."${config.xdg.configHome}/delta/themes.gitconfig" = {
-        source = pkgs.fetchurl {
-          url = "https://raw.githubusercontent.com/dandavison/delta/0.18.2/themes.gitconfig";
-          sha256 = "sha256-7G/Dz7LPmY+DUO/YTWJ7hOWp/e6fx+08x22AeZxnx5U=";
-        };
+      home.file."${config.xdg.dataHome}/bin/switch_monitor_input_source.sh" = {
+        source = ./programs/switch_monitor_input_source.sh;
+        executable = true;
       };
       programs.git = {
         enable = true;
@@ -385,7 +421,7 @@
             side-by-side = true;
             features = "hoopoe";
             syntax-theme = "rose-pine-dawn";
-           
+
           };
         };
       };
@@ -407,6 +443,33 @@
             file = "dist/themes/rose-pine-dawn.tmTheme";
           };
         };
+      };
+
+      home.file."${config.xdg.configHome}/delta/themes.gitconfig" = {
+        source = pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/dandavison/delta/0.18.2/themes.gitconfig";
+          sha256 = "sha256-7G/Dz7LPmY+DUO/YTWJ7hOWp/e6fx+08x22AeZxnx5U=";
+        };
+      };
+
+
+      dconf.settings = {
+        "org/gnome/settings-daemon/plugins/media-keys" = {
+          custom-keybindings = [
+            "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+          ];
+        };
+        "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+          name = "Set Dell P2419HC Input Source to DisplayPort";
+          command = "${config.xdg.dataHome}/bin/switch_monitor_input_source.sh";
+          binding = "<Shift><Control><Alt>d";
+          enable-in-lockscreen = true;
+        };
+      };
+
+      programs.zoxide = {
+        enable = true;
+        enableNushellIntegration = true;
       };
 
       home.stateVersion = args.nixOSVersion;
@@ -442,12 +505,6 @@
         echo "Done."
       '';
     };
-  };
-
-  # NOTE: Still working on how to move the following to home manager
-  programs.nautilus-open-any-terminal = {
-    enable = true;
-    terminal = "wezterm";
   };
 
   fonts.packages = with pkgs; [

@@ -66,8 +66,15 @@ in
   };
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver = {
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
+  };
+  
+  environment.gnome.excludePackages = with pkgs; [
+    epiphany
+    gnome-tour
+  ];
 
   # Install KDE Connect
   programs.kdeconnect = {
@@ -76,15 +83,21 @@ in
   };
 
   # Esthetic feel on login
-  programs.dconf.profiles.gdm.databases = [
-    {
-      settings = {
-        "org/gnome/desktop/interface" = {
-          "accent-color" = "orange";
+  programs.dconf = {
+    enable = true;
+    profiles.gdm.databases = [
+      {
+        settings = {
+          "org/gnome/desktop/interface" = {
+            "accent-color" = "orange";
+          };
         };
-      };
-    }
-  ];
+      }
+    ];
+  };
+  # INFO: This program has an Open Here extension that I dislike.
+  # Also it is non functional at the time of writing.
+  programs.nautilus-open-any-terminal.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -114,10 +127,9 @@ in
     #media-session.enable = true;
   };
 
-  # TODO: Should this be moved to home manager?
-  # Install firefox.
+  # Everybody gets firefox.
   programs.firefox.enable = true;
-  # Install Thunderbird.
+  # NOTE: I'm not sure about Thunderbird. But I'm leaving it in for now.
   programs.thunderbird.enable = true;
 
   # List packages installed in system profile. To search, run:
@@ -125,7 +137,6 @@ in
   # NOTE: Most of these are here for the root user...
   environment.systemPackages = with pkgs; [
     # Nix tools
-    # home-manager
     nil # language server
     nixd # language server
     nixfmt-rfc-style # formatter
@@ -145,6 +156,7 @@ in
     nushell
     fish
     starship
+    # NOTE: This could be don better
     vivid
 
     # Desktop tools for all users
