@@ -37,10 +37,16 @@
         modules = [
           # Enable important experimental features
           {
-            nix.settings.experimental-features = [
-              "nix-command"
-              "flakes"
-            ];
+            nix.settings = {
+              experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
+              # trusted-users = [
+              #   "root"
+              #   "matei"
+              # ];
+            };
           }
 
           ./configuration.nix

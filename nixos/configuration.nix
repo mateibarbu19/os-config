@@ -70,7 +70,7 @@ in
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
   };
-  
+
   environment.gnome.excludePackages = with pkgs; [
     epiphany
     gnome-tour
@@ -141,6 +141,10 @@ in
     nixd # language server
     nixfmt-rfc-style # formatter
     cachix # community caches
+
+    wget
+    zip
+    unzip
 
     # TUI work tools for all users
     helix
@@ -225,8 +229,9 @@ in
   # networking.firewall.enable = false;
 
   # Enable common container config files in /etc/containers
-  virtualisation.containers.enable = true;
   virtualisation = {
+    containers.enable = true;
+
     podman = {
       enable = true;
 
@@ -236,7 +241,31 @@ in
       # Required for containers under podman-compose to be able to talk to each other.
       defaultNetwork.settings.dns_enabled = true;
     };
+
+    libvirtd = {
+      enable = true;
+      qemu = {
+        package = pkgs.qemu_kvm;
+        runAsRoot = true;
+        swtpm.enable = true;
+        ovmf = {
+          # not needed in NixOS 25.11 since https://github.com/NixOS/nixpkgs/pull/421549
+          enable = true;
+          packages = [
+            (pkgs.OVMF.override {
+              secureBoot = true;
+              tpmSupport = true;
+            }).fd
+          ];
+        };
+      };
+    };
+    spiceUSBRedirection.enable = true;
   };
+
+  programs.virt-manager.enable = true;
+
+  users.groups.libvirtd.members = [ "matei" ];
 
   # NixOS version
   system.stateVersion = nixOSVersion;

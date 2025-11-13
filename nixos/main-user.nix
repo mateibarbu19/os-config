@@ -71,6 +71,7 @@ in
       kdePackages.kdenlive
 
       # Programming
+      vscodium
       # python313
       # python313Packages.python-lsp-server
       # python313Packages.python-lsp-ruff
@@ -369,9 +370,35 @@ in
         };
       };
 
+      programs.bash = {
+        enable = true;
+        initExtra = ''
+          if [[ -n $WEZTERM_EXECUTABLE ]]; then
+            export LS_COLORS="$(vivid generate rose-pine-dawn)";
+          fi
+        '';
+      };
+
+      # programs.vivid = {
+      #   enable = true;
+      #   activeTheme = "rose-pine-dawn";
+      #   enableBashIntegration = true;
+      # };
+
       programs.starship = {
         enable = true;
         enableNushellIntegration = true;
+        enableBashIntegration = true;
+
+        settings = {
+          shell = {
+            disabled = false;
+            bash_indicator = " ";
+            nu_indicator = "";
+            format = "[$indicator]($style)";
+          };
+        };
+
       };
 
       programs.yazi = {
@@ -452,7 +479,6 @@ in
         };
       };
 
-
       dconf.settings = {
         "org/gnome/settings-daemon/plugins/media-keys" = {
           custom-keybindings = [
@@ -470,6 +496,12 @@ in
       programs.zoxide = {
         enable = true;
         enableNushellIntegration = true;
+      };
+
+      programs.mcfly = {
+        enable = true;
+        enableBashIntegration = true;
+        # enableLightTheme = true;
       };
 
       home.stateVersion = args.nixOSVersion;

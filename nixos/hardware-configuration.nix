@@ -31,12 +31,12 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/34f9932a-0ee9-467f-9191-815515e0cbfe";
+    device = "/dev/disk/by-label/LinuxRoot";
     fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/B036-4B68";
+    device = "/dev/disk/by-label/EFI";
     fsType = "vfat";
     options = [
       "fmask=0077"
