@@ -4,11 +4,9 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
   ...
-}:
-
+}@args:
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -30,11 +28,6 @@
   ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-label/LinuxRoot";
-    fsType = "ext4";
-  };
-
   fileSystems."/boot" = {
     device = "/dev/disk/by-label/EFI";
     fsType = "vfat";
@@ -43,13 +36,19 @@
       "dmask=0077"
     ];
   };
-  fileSystems."/media/matei/Date" = {
-    device = "/dev/disk/by-label/Date";
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/LinuxRoot";
+    fsType = "ext4";
+  };
+
+  fileSystems."/media/${args.vars.mainUsername}/Data" = {
+    device = "/dev/disk/by-label/Data";
     fsType = "ext4";
     options = [
       "user"
       "defaults"
-      "X-mount.owner=matei"
+      "X-mount.owner=${args.vars.mainUsername}"
       "X-mount.group=users"
     ];
   };
@@ -69,7 +68,7 @@
   # networking.interfaces.enp57s0u1u1.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlp0s20f3.useDHCP = lib.mkDefault true;
 
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  nixpkgs.hostPlatform = lib.mkDefault args.vars.system;
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   # Configure printers
@@ -92,7 +91,7 @@
     ];
   };
 
-  # For my LG27GS95QE OLED monitor
+  # NOTE: Temporary solution for my LG27GS95QE OLED monitor
   # fonts.fontconfig.antialias = false;
   # fonts.fontconfig.subpixel.rgba = "rgb";
   fonts.fontconfig.subpixel.lcdfilter = "light";

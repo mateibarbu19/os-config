@@ -1,7 +1,10 @@
-- Split `main-user.nix`
+- Nextcloud account sync
+- Sign git commits
+- Time zone per user
+- Per terminal config
 - Add multi host support
 - Add multi user support
-- Create a vivid module
+- Starship not in the Linux Console
 - Declarative extension enabling
   - In Gnome:
     - https://nixos.wiki/wiki/GNOME#Managing_extensions

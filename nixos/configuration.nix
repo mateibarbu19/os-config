@@ -6,13 +6,13 @@
   config,
   pkgs,
   lib,
+  vars,
   parentArgs,
-  nixOSVersion,
   ...
-}:
+}@args:
 let
   unstablePkgs = import parentArgs.unstable {
-    system = pkgs.system;
+    system = pkgs.system; # TODO: what should I do with system?
     config.allowUnfree = true;
   };
 in
@@ -21,14 +21,35 @@ in
   nixpkgs.config.allowUnfree = true;
 
   imports = [
-    ./hardware-configuration.nix
     ./cachix.nix
-    (import ./main-user.nix {
-      inherit pkgs unstablePkgs;
-      nixOSVersion = nixOSVersion;
-      zen-browser = parentArgs.zen-browser;
-      firefox-addons = parentArgs.firefox-addons;
-    })
+    (import ./hardware-configuration.nix (
+      let
+        modulesPath = args.modulesPath;
+      in
+      {
+        inherit
+          config
+          lib
+          modulesPath
+          vars
+          ;
+      }
+    ))
+    (import ./main-user.nix { inherit pkgs unstablePkgs vars; })
+    (import ./home.nix (
+      let
+        zen-browser = parentArgs.zen-browser;
+        firefox-addons = parentArgs.firefox-addons;
+      in
+      {
+        inherit
+          pkgs
+          vars
+          zen-browser
+          firefox-addons
+          ;
+      }
+    ))
   ];
 
   # Bootloader.
@@ -36,7 +57,7 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Define your hostname.
-  networking.hostName = "nixos";
+  networking.hostName = args.vars.hostName;
   # Enable wireless support via wpa_supplicant.
   # networking.wireless.enable = true;
 
@@ -89,12 +110,13 @@ in
       {
         settings = {
           "org/gnome/desktop/interface" = {
-            "accent-color" = "orange";
+            "accent-color" = args.vars.gnomeAccentColor;
           };
         };
       }
     ];
   };
+
   # INFO: This program has an Open Here extension that I dislike.
   # Also it is non functional at the time of writing.
   programs.nautilus-open-any-terminal.enable = true;
@@ -142,9 +164,14 @@ in
     nixfmt-rfc-style # formatter
     cachix # community caches
 
-    wget
-    zip
-    unzip
+    # Shell environment
+    bash
+    nushell
+    fish
+    starship
+    # NOTE: This could be don better
+    vivid
+    zoxide
 
     # TUI work tools for all users
     helix
@@ -155,13 +182,6 @@ in
     unstablePkgs.yazi
     fzf
     fd
-
-    # Shells
-    nushell
-    fish
-    starship
-    # NOTE: This could be don better
-    vivid
 
     # Desktop tools for all users
     gdm-settings
@@ -175,6 +195,9 @@ in
     pciutils
     usbutils
     ddcutil
+    wget
+    zip
+    unzip
 
     # Virtualisation
     dive # look into docker image layers
@@ -205,8 +228,6 @@ in
       update.onActivation = true;
     };
   };
-
-  home-manager.backupFileExtension = "bkp";
 
   # Set default editor
   # environment.variables.EDITOR = "hx";
@@ -241,32 +262,8 @@ in
       # Required for containers under podman-compose to be able to talk to each other.
       defaultNetwork.settings.dns_enabled = true;
     };
-
-    libvirtd = {
-      enable = true;
-      qemu = {
-        package = pkgs.qemu_kvm;
-        runAsRoot = true;
-        swtpm.enable = true;
-        ovmf = {
-          # not needed in NixOS 25.11 since https://github.com/NixOS/nixpkgs/pull/421549
-          enable = true;
-          packages = [
-            (pkgs.OVMF.override {
-              secureBoot = true;
-              tpmSupport = true;
-            }).fd
-          ];
-        };
-      };
-    };
-    spiceUSBRedirection.enable = true;
   };
 
-  programs.virt-manager.enable = true;
-
-  users.groups.libvirtd.members = [ "matei" ];
-
   # NixOS version
-  system.stateVersion = nixOSVersion;
+  system.stateVersion = args.vars.nixOSVersion;
 }
