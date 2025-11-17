@@ -12,10 +12,6 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    determinate = {
-      url = "https://flakehub.com/f/DeterminateSystems/determinate/3.13.1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=v0.6.0";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
@@ -45,7 +41,6 @@
           ./configuration.nix
           args.home-manager.nixosModules.default
           args.nix-flatpak.nixosModules.nix-flatpak
-          args.determinate.nixosModules.default
         ];
       };
     };

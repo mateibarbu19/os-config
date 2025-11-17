@@ -94,6 +94,7 @@ in
             nu_indicator = "";
             format = "[$indicator]($style)";
           };
+          nix_shell.heuristic = true;
         };
 
       };
@@ -116,7 +117,6 @@ in
         enable = true;
         enableNushellIntegration = true;
       };
-
 
       programs.yazi = {
         enable = true;
@@ -164,6 +164,24 @@ in
             features = "hoopoe";
             syntax-theme = "rose-pine-dawn";
 
+          };
+        };
+      };
+
+      programs.ssh = {
+        enable = true;
+        matchBlocks = {
+          "fep" = {
+            user = args.vars.fepUser;
+            hostname = "fep.grid.pub.ro";
+            forwardX11Trusted = true;
+            serverAliveInterval = 60;
+          };
+          "openstack-*" = {
+            user = "student";
+            identityFile = "~/.ssh/id_openstack";
+            forwardX11Trusted = true;
+            proxyCommand = ''ssh fep.grid.pub.ro -W $(echo "%h" | cut -d- -f2):%p'';
           };
         };
       };
