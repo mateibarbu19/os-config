@@ -30,7 +30,7 @@
       vars = import ./variables.nix;
     in
     {
-      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.${vars.hostName} = nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit vars;
           parentArgs = args;

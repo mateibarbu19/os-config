@@ -100,6 +100,8 @@ in
         src="/home/matei/.config/monitors.xml"
         dest="/run/gdm/.config/monitors.xml"
 
+        test -f "$src" || exit 0
+
         echo "Copying $src to $dest..."
         install -D -m 644 "$src" "$dest"
         chown gdm:gdm "$dest"

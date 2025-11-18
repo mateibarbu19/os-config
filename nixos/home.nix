@@ -466,6 +466,10 @@ in
         "org/gnome/desktop/mutter" = {
           "locate-pointer-key" = "Control_R";
         };
+        "org/gnome/settings-daemon/plugins/color" = {
+          "night-light-enabled" = true;
+          "night-light-schedule-automatic" = true;
+        };
       };
 
       home.file.".var/app/de.swsnr.pictureoftheday/config/glib-2.0/settings/keyfile" = {
