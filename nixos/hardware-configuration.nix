@@ -53,11 +53,26 @@
     ];
   };
 
+  fileSystems."/mnt/my-ramdisk" = {
+    device = "none";
+    fsType = "tmpfs";
+    options = [
+      "user"
+      "defaults"
+      "X-mount.owner=${args.vars.mainUsername}"
+      "X-mount.group=users"
+      "size=100M"
+    ];
+  };
+
   # Disable swap
   boot.kernel.sysctl = {
     "vm.swappiness" = 0;
   };
   swapDevices = [ ];
+
+  # Don't bloat disk with tmp files
+  boot.tmp.cleanOnBoot = true;
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
