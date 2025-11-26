@@ -174,14 +174,16 @@ in
           "fep" = {
             user = args.vars.fepUser;
             hostname = "fep.grid.pub.ro";
+            forwardX11 = true;
             forwardX11Trusted = true;
             serverAliveInterval = 60;
           };
-          "openstack-*" = {
+          "10.*" = {
             user = "student";
             identityFile = "~/.ssh/id_openstack";
+            forwardX11 = true;
             forwardX11Trusted = true;
-            proxyCommand = ''ssh fep.grid.pub.ro -W $(echo "%h" | cut -d- -f2):%p'';
+            proxyJump = "fep";
           };
         };
       };
