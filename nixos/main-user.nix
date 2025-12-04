@@ -1,8 +1,14 @@
 {
   pkgs,
   unstablePkgs,
+  lib,
   ...
 }@args:
+let
+  iconPath = "/var/lib/AccountsService/icons/${args.vars.mainUsername}";
+  userConfigPath = "/var/lib/AccountsService/users/${args.vars.mainUsername}";
+  iconSource = ./images/profile_picture.jpg; 
+in
 {
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${args.vars.mainUsername} = {
@@ -101,6 +107,40 @@
       '';
     };
   };
+
+  # 1. Handle the Image File (Atomic, Clean)
+  systemd.tmpfiles.rules = [
+    "L+ ${iconPath} - - - - ${iconSource}"
+  ];
+
+  # 2. Handle the Text Config (Smart Editing)
+  system.activationScripts.updateGnomeIcon = lib.stringAfter [ "users" ] ''
+    # Ensure the directory exists
+    mkdir -p /var/lib/AccountsService/users/
+
+    # Define the config file path
+    CFG="${userConfigPath}"
+    ICON_LINE="Icon=${iconPath}"
+
+    if [ ! -f "$CFG" ]; then
+      # Case A: File doesn't exist. Create it with header and icon.
+      echo -e "[User]\n$ICON_LINE" > "$CFG"
+      chmod 600 "$CFG"
+    else
+      # Case B: File exists. We need to surgically update or append.
+      
+      # Check if an Icon line already exists
+      if grep -q "^Icon=" "$CFG"; then
+        # Case B1: Icon line exists (wrong or right). Replace it using sed.
+        # We use | as delimiter to avoid issues with / in file paths
+        ${pkgs.gnused}/bin/sed -i "s|^Icon=.*|$ICON_LINE|" "$CFG"
+      else
+        # Case B2: File exists, but no Icon line. Append it.
+        # Ensure we are under [User] if possible, but appending usually works for GDM.
+        echo "$ICON_LINE" >> "$CFG"
+      fi
+    fi
+  '';
 
   fonts.packages = with pkgs; [
     nerd-fonts.fira-code

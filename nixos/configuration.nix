@@ -35,7 +35,7 @@ in
           ;
       }
     ))
-    (import ./main-user.nix { inherit pkgs unstablePkgs vars; })
+    (import ./main-user.nix { inherit pkgs unstablePkgs lib vars; })
     (import ./home.nix (
       let
         zen-browser = parentArgs.zen-browser;
