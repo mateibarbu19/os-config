@@ -1,26 +1,10 @@
 {
-  pkgs,
   zen-browser,
   firefox-addons,
   ...
 }@args:
 let
-  rosePineFlavors = pkgs.fetchFromGitHub {
-    owner = "rose-pine";
-    repo = "yazi";
-    rev = "7fe22e1d7f909bc9d0961edbd52deb745e5b0cfc";
-    sha256 = "sha256-zCLGlAX6JOmwcgnNLerSmvhCpYm/PL6JsXBU7Gq2kTI=";
-  };
-  rosePineTextMateTheme = pkgs.fetchFromGitHub {
-    owner = "rose-pine";
-    repo = "tm-theme"; # Bat uses sublime syntax for its themes
-    rev = "c4cab0c431f55a3c4f9897407b7bdad363bbb862";
-    sha256 = "maQp4QTJOlK24eid7mUsoS7kc8P0gerKcbvNaxO8Mic=";
-  };
-  deltaThemes = pkgs.fetchurl {
-    url = "https://raw.githubusercontent.com/dandavison/delta/0.18.2/themes.gitconfig";
-    sha256 = "sha256-7G/Dz7LPmY+DUO/YTWJ7hOWp/e6fx+08x22AeZxnx5U=";
-  };
+  potdSettings = builtins.readFile ./programs/picture-of-the-day.ini;
 in
 {
   home-manager = {
@@ -63,11 +47,6 @@ in
       # Keeping things consistent with the base shell
       programs.bash = {
         enable = true;
-        initExtra = ''
-          if [[ -n $WEZTERM_EXECUTABLE ]]; then
-            export LS_COLORS="$(vivid generate rose-pine-dawn)";
-          fi
-        '';
       };
 
       programs.mcfly = {
@@ -75,12 +54,11 @@ in
         enableBashIntegration = true;
       };
 
-      # TODO: Disable comments when a new version is released
-      # programs.vivid = {
-      #   enable = true;
-      #   activeTheme = "rose-pine-dawn";
-      #   enableBashIntegration = true;
-      # };
+      programs.vivid = {
+        enable = true;
+        activeTheme = "rose-pine-dawn";
+        enableBashIntegration = true;
+      };
 
       programs.starship = {
         enable = true;
@@ -111,8 +89,8 @@ in
         };
         themes = {
           rose-pine-dawn = {
-            src = rosePineTextMateTheme;
-            file = "dist/themes/rose-pine-dawn.tmTheme";
+            src = args.rosePineTextMateTheme;
+            file = "dist/rose-pine-dawn.tmTheme";
           };
         };
       };
@@ -131,49 +109,51 @@ in
             use = "rose-pine-dawn";
           };
 
-          icon = (builtins.fromTOML (builtins.readFile "${rosePineFlavors}/themes/rose-pine-dawn.toml")).icon;
+          icon =
+            (builtins.fromTOML (builtins.readFile "${args.rosePineFlavors}/themes/rose-pine-dawn.toml")).icon;
         };
         flavors = {
-          rose-pine-dawn = "${rosePineFlavors}/flavors/rose-pine-dawn.yazi";
+          rose-pine-dawn = "${args.rosePineFlavors}/flavors/rose-pine-dawn.yazi";
         };
-      };
-
-      # Fetch the Delta themes.gitconfig from GitHub
-      home.file."${config.xdg.configHome}/delta/themes.gitconfig" = {
-        source = deltaThemes;
       };
 
       programs.git = {
         enable = true;
-        userName = args.vars.fullName;
-        userEmail = args.vars.userEmail;
 
         includes = [
-          { path = "${config.xdg.configHome}/delta/themes.gitconfig"; }
+          { path = args.deltaThemes; }
         ];
 
-        extraConfig = {
+        settings = {
+          user.name = args.vars.fullName;
+          user.email = args.vars.userEmail;
+
           core.editor = "hx";
           pull.rebase = true;
           push.autoSetupRemote = true;
           init.defaultBranch = "main";
         };
 
-        delta = {
-          enable = true;
-          options = {
-            navigate = true;
-            line-numbers = true;
-            side-by-side = true;
-            features = "hoopoe";
-            syntax-theme = "rose-pine-dawn";
+      };
 
-          };
+      programs.delta = {
+        enable = true;
+        enableGitIntegration = true;
+
+        options = {
+          navigate = true;
+          line-numbers = true;
+          side-by-side = true;
+          features = "hoopoe";
+          syntax-theme = "rose-pine-dawn";
+
         };
       };
 
       programs.ssh = {
         enable = true;
+        enableDefaultConfig = false;
+
         matchBlocks = {
           "fep" = {
             user = args.vars.fepUser;
@@ -388,7 +368,7 @@ in
           extensions = {
             force = true; # Whether to override all previous firefox settings.
 
-            packages = with firefox-addons.packages.${pkgs.system}; [
+            packages = with firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
               ublock-origin
               decentraleyes
               clearurls
@@ -459,22 +439,43 @@ in
           enable-in-lockscreen = true;
         };
         "org/gnome/desktop/interface" = {
-          "accent-color" = args.vars.gnomeAccentColor;
-          "locate-pointer" = true;
-          "clock-show-seconds" = true;
+          accent-color = args.vars.gnomeAccentColor;
+          locate-pointer = true;
+          clock-show-seconds = true;
         };
         "org/gnome/mutter" = {
-          "locate-pointer-key" = "Control_R";
+          locate-pointer-key = "Control_R";
         };
         "org/gnome/settings-daemon/plugins/color" = {
-          "night-light-enabled" = true;
-          "night-light-schedule-automatic" = true;
+          night-light-enabled = true;
+          night-light-schedule-automatic = true;
+        };
+        "org/gnome/shell" = {
+          favorite-apps = [
+            "zen-beta.desktop"
+            "org.wezfurlong.wezterm.desktop"
+            "org.gnome.Nautilus.desktop"
+          ];
+
+          disable-user-extensions = false; # Enables extension system
+          enabled-extensions = [
+            "gsconnect@andyholmes.github.io"
+            "system-monitor@gnome-shell-extensions.gcampax.github.com"
+            "status-icons@gnome-shell-extensions.gcampax.github.com"
+            "pomodoro@arun.codito.in"
+            "display-brightness-ddcutil@themightydeity.github.com"
+          ];
         };
       };
 
-      home.file.".var/app/de.swsnr.pictureoftheday/config/glib-2.0/settings/keyfile" = {
-        source = ./programs/picture-of-the-day.ini;
-      };
+      home.activation.configurePictureOfTheDay = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+        mkdir -p $HOME/.var/app/de.swsnr.pictureoftheday/config/glib-2.0/settings
+
+        # Write the settings file (using cat to ensure it's a regular writable file)
+        cat <<EOF > $HOME/.var/app/de.swsnr.pictureoftheday/config/glib-2.0/settings/keyfile
+        ${potdSettings}
+        EOF
+      '';
 
       home.stateVersion = args.vars.nixOSVersion;
     };

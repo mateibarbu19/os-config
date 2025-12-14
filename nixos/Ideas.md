@@ -12,6 +12,7 @@
   - In Firefox
 - Firefox to be alike to Zen
 - Languages in Firefox
+- Firefox lock expressions version
 - PWAs
   - Discord?
   - Matrix?

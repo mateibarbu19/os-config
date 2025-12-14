@@ -8,15 +8,20 @@
   lib,
   vars,
   parentArgs,
+  source,
   ...
 }@args:
 let
   unstablePkgs = import parentArgs.unstable {
-    system = pkgs.system; # TODO: what should I do with system?
+    system = pkgs.stdenv.hostPlatform.system; # TODO: what should I do with system?
     config.allowUnfree = true;
   };
 in
 {
+  # This copies the flake source into the Nix store and
+  # creates a symlink at /etc/nixos-flake pointing to it.
+  environment.etc."nixos-flake".source = source;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -47,13 +52,18 @@ in
       let
         zen-browser = parentArgs.zen-browser;
         firefox-addons = parentArgs.firefox-addons;
+        rosePineFlavors = parentArgs.rosePineFlavors;
+        rosePineTextMateTheme = parentArgs.rosePineTextMateTheme;
+        deltaThemes = parentArgs.deltaThemes;
       in
       {
         inherit
-          pkgs
           vars
           zen-browser
           firefox-addons
+          rosePineFlavors
+          rosePineTextMateTheme
+          deltaThemes
           ;
       }
     ))
@@ -94,7 +104,7 @@ in
   };
 
   # Enable the GNOME Desktop Environment.
-  services.xserver = {
+  services = {
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
   };
@@ -197,7 +207,7 @@ in
     gnomeExtensions.status-icons
 
     # System tools for all users
-    du-dust
+    dust
     lshw
     pciutils
     usbutils
@@ -218,21 +228,25 @@ in
     flatpak = {
       enable = true;
 
+      remotes = {
+        "flathub" = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+      };
+
       # List the Flatpak applications you want to install
       # Use the official Flatpak application ID (e.g., from flathub.org)
       # Examples:
       packages = [
-        "com.github.tchx84.Flatseal" # Manage flatpak permissions - should always have this
+        # "com.github.tchx84.Flatseal" # Manage flatpak permissions - should always have this
         # "com.rtosta.zapzap"              # WhatsApp client
-        "io.github.flattool.Warehouse" # Manage flatpaks, clean data, remove flatpaks and deps
+        # "io.github.flattool.Warehouse" # Manage flatpaks, clean data, remove flatpaks and deps
         # "it.mijorus.gearlever"           # Manage and support AppImages
         # "io.github.dvlv.boxbuddyrs"      # Manage distroboxes
         # "de.schmidhuberj.tubefeeder"     # watch YT videos
-        "de.swsnr.pictureoftheday" # Change my wallpaper based on online sources
+        "flathub:app/de.swsnr.pictureoftheday/x86_64/stable" # Change my wallpaper based on online sources
       ];
 
       # Optional: Automatically update Flatpaks when you run nixos-rebuild switch
-      update.onActivation = true;
+      # update.onActivation = true;
 
       overrides = {
         "de.swsnr.pictureoftheday"."System Bus Policy" = {
