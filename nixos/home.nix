@@ -463,7 +463,7 @@ in
           "locate-pointer" = true;
           "clock-show-seconds" = true;
         };
-        "org/gnome/desktop/mutter" = {
+        "org/gnome/mutter" = {
           "locate-pointer-key" = "Control_R";
         };
         "org/gnome/settings-daemon/plugins/color" = {
