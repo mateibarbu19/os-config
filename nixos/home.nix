@@ -90,9 +90,13 @@ in
         settings = {
           shell = {
             disabled = false;
-            bash_indicator = "bash ";
+            bash_indicator = " ";
             nu_indicator = "";
             format = "[$indicator]($style)";
+          };
+          time = {
+            disabled = false;
+            format = " [$time]($style) ";
           };
           nix_shell.heuristic = true;
         };
@@ -462,6 +466,10 @@ in
         "org/gnome/desktop/mutter" = {
           "locate-pointer-key" = "Control_R";
         };
+      };
+
+      home.file.".var/app/de.swsnr.pictureoftheday/config/glib-2.0/settings/keyfile" = {
+        source = ./programs/picture-of-the-day.ini;
       };
 
       home.stateVersion = args.vars.nixOSVersion;

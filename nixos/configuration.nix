@@ -35,7 +35,14 @@ in
           ;
       }
     ))
-    (import ./main-user.nix { inherit pkgs unstablePkgs lib vars; })
+    (import ./main-user.nix {
+      inherit
+        pkgs
+        unstablePkgs
+        lib
+        vars
+        ;
+    })
     (import ./home.nix (
       let
         zen-browser = parentArgs.zen-browser;
@@ -226,6 +233,12 @@ in
 
       # Optional: Automatically update Flatpaks when you run nixos-rebuild switch
       update.onActivation = true;
+
+      overrides = {
+        "de.swsnr.pictureoftheday"."System Bus Policy" = {
+          "org.freedesktop.login1" = [ "talk" ];
+        };
+      };
     };
   };
 
