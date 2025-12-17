@@ -201,6 +201,7 @@ in
     fd
 
     # Desktop tools for all users
+    wl-clipboard # copying text from the terminal in a Wayland session
     gdm-settings
     gnome-tweaks
     gnomeExtensions.system-monitor

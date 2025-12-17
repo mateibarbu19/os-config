@@ -42,7 +42,7 @@ in
 
       gnome-solanum
       gnome-pomodoro
-      gcolor3
+      eyedropper
       gnomeExtensions.brightness-control-using-ddcutil
 
       easyeffects
@@ -68,6 +68,9 @@ in
       # Video Editing
       kdePackages.kdenlive
 
+      # Editing
+      apostrophe
+
       # Programming
       vscodium
       # python313
@@ -85,6 +88,8 @@ in
 
       # Online tools
       ungoogled-chromium
+
+      mission-center
     ];
   };
 

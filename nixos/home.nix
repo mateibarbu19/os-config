@@ -466,6 +466,9 @@ in
             "display-brightness-ddcutil@themightydeity.github.com"
           ];
         };
+        "org/gnome/shell/extensions/system-monitor" = {
+          show-swap = false;
+        };
       };
 
       home.activation.configurePictureOfTheDay = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
