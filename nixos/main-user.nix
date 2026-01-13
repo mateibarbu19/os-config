@@ -68,8 +68,12 @@ in
       # Video Editing
       kdePackages.kdenlive
 
-      # Editing
+      # Text editing and reading
       apostrophe
+      foliate
+      hunspellDicts.ro-ro
+      hunspellDicts.en-us-large
+      hunspellDicts.en-gb-large
 
       # Programming
       vscodium
@@ -93,6 +97,8 @@ in
     ];
   };
 
+  # NOTE: Keep a lookout for
+  # https://gitlab.gnome.org/GNOME/gdm/-/issues/1028
   systemd.services.copyGdmMonitorsXml = {
     description = "Copy Matei's monitors.xml to GDM config";
     after = [ "display-manager.service" ];
@@ -103,7 +109,7 @@ in
       ExecStart = pkgs.writeShellScript "copy-gdm-monitors" ''
         set -euo pipefail
         src="/home/matei/.config/monitors.xml"
-        dest="/run/gdm/.config/monitors.xml"
+        dest="/var/lib/gdm/seat0/config/monitors.xml"
 
         test -f "$src" || exit 0
 

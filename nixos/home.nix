@@ -150,6 +150,15 @@ in
         };
       };
 
+      home.file."${config.xdg.configHome}/gitui/rose-pine-dawn.tmTheme" = {
+        source = "${args.rosePineTextMateTheme}/dist/rose-pine-dawn.tmTheme";
+      };
+
+      programs.gitui = {
+        enable = true;
+        theme = ./programs/gitui_theme.ron;
+      };
+
       programs.ssh = {
         enable = true;
         enableDefaultConfig = false;
