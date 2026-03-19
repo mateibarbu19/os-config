@@ -156,6 +156,21 @@ in
   '';
 
   fonts.packages = with pkgs; [
+    # Web safe fonts for web applications
+    corefonts
+
+    # Source family for web applications
+    source-sans
+    source-serif
+    source-code-pro
+
+    # Fira family
+    fira-sans
+    fira-mono
     nerd-fonts.fira-code
+
+    # For typography
+    libertinus
+    newcomputermodern
   ];
 }

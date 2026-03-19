@@ -196,7 +196,7 @@ in
     bat-extras.batman
     eza
     tealdeer
-    unstablePkgs.yazi
+    yazi
     fzf
     fd
 
