@@ -72,6 +72,7 @@ in
           vars
           zen-browser
           firefox-addons
+          switch-monitor-input-source
           rosePineFlavors
           rosePineTextMateTheme
           deltaThemes

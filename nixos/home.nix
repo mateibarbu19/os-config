@@ -55,7 +55,7 @@ in
         enable = true;
         configFile.source = ./programs/config.nu;
         environmentVariables = {
-          LS_COLORS = lib.hm.nushell.mkNushellInline ''vivid generate rose-pine-dawn'';
+          LS_COLORS = lib.hm.nushell.mkNushellInline "vivid generate rose-pine-dawn";
         };
       };
 
@@ -209,7 +209,7 @@ in
         };
         "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
           name = "Set Dell P2419HC Input Source to DisplayPort";
-          command = "switch_monitor_input_source";
+          command = "${pkgs.lib.getExe args.switch-monitor-input-source}";
           binding = "<Shift><Control><Alt>d";
           enable-in-lockscreen = true;
         };
