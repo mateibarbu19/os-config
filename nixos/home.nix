@@ -30,6 +30,16 @@ in
         programs/helix.nix
       ];
 
+      # Template files
+      home.file."${config.xdg.userDirs.templates}/New Text File.txt" = {
+        enable = true;
+        text = "";
+      };
+      home.file."${config.xdg.userDirs.templates}/New Markdown File.md" = {
+        enable = true;
+        text = "";
+      };
+
       home.shell.enableBashIntegration = false;
 
       # The terminal of choice
