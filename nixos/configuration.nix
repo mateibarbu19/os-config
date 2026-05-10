@@ -195,7 +195,7 @@ in
     bat
     bat-extras.batman
     eza
-    tealdeer
+    tlrc
     yazi
     fzf
     fd
