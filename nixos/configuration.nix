@@ -16,6 +16,16 @@ let
     system = pkgs.stdenv.hostPlatform.system; # TODO: what should I do with system?
     config.allowUnfree = true;
   };
+  switch-monitor-input-source = pkgs.writeShellApplication {
+    name = "switch_monitor_input_source";
+
+    runtimeInputs = [
+      pkgs.ddcutil
+    ];
+
+    text = builtins.readFile ./programs/switch_monitor_input_source.sh;
+  };
+
 in
 {
   # This copies the flake source into the Nix store and
@@ -55,6 +65,7 @@ in
         rosePineFlavors = parentArgs.rosePineFlavors;
         rosePineTextMateTheme = parentArgs.rosePineTextMateTheme;
         deltaThemes = parentArgs.deltaThemes;
+        rosePineGemini = parentArgs.rosePineGemini;
       in
       {
         inherit
@@ -64,6 +75,8 @@ in
           rosePineFlavors
           rosePineTextMateTheme
           deltaThemes
+          rosePineGemini
+          unstablePkgs
           ;
       }
     ))
@@ -103,12 +116,6 @@ in
     LC_TIME = "ro_RO.UTF-8";
   };
 
-  # Enable the GNOME Desktop Environment.
-  services = {
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
-  };
-
   environment.gnome.excludePackages = with pkgs; [
     epiphany
     gnome-tour
@@ -118,20 +125,6 @@ in
   programs.kdeconnect = {
     enable = true;
     package = pkgs.gnomeExtensions.gsconnect;
-  };
-
-  # Esthetic feel on login
-  programs.dconf = {
-    enable = true;
-    profiles.gdm.databases = [
-      {
-        settings = {
-          "org/gnome/desktop/interface" = {
-            "accent-color" = args.vars.gnomeAccentColor;
-          };
-        };
-      }
-    ];
   };
 
   # INFO: This program has an Open Here extension that I dislike.
@@ -213,10 +206,13 @@ in
     lshw
     pciutils
     usbutils
-    ddcutil
     wget
     zip
     unzip
+
+    # Monitor quality of life
+    ddcutil
+    switch-monitor-input-source
 
     # Virtualisation
     dive # look into docker image layers
@@ -224,6 +220,28 @@ in
     podman-compose # start group of containers for dev
     distrobox
   ];
+
+  # Enable the GNOME Desktop Environment.
+  services = {
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
+  };
+
+  # Login customization
+  programs.dconf = {
+    enable = true;
+    profiles = {
+      gdm.databases = [
+        {
+          settings = {
+            "org/gnome/desktop/interface" = {
+              "accent-color" = args.vars.gnomeAccentColor;
+            };
+          };
+        }
+      ];
+    };
+  };
 
   # Enable flatpak
   services = {

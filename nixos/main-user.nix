@@ -22,6 +22,7 @@ in
     extraGroups = [
       "networkmanager"
       "wheel"
+      "i2c"
     ];
 
     packages = with pkgs; [
@@ -43,7 +44,7 @@ in
       gnome-solanum
       gnome-pomodoro
       eyedropper
-      gnomeExtensions.brightness-control-using-ddcutil
+      # gnomeExtensions.brightness-control-using-ddcutil
 
       easyeffects
 

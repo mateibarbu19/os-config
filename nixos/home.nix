@@ -208,7 +208,7 @@ in
         };
         "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
           name = "Set Dell P2419HC Input Source to DisplayPort";
-          command = "${config.xdg.dataHome}/bin/switch_monitor_input_source.sh";
+          command = "switch_monitor_input_source";
           binding = "<Shift><Control><Alt>d";
           enable-in-lockscreen = true;
         };
@@ -237,7 +237,7 @@ in
             "system-monitor@gnome-shell-extensions.gcampax.github.com"
             "status-icons@gnome-shell-extensions.gcampax.github.com"
             "pomodoro@arun.codito.in"
-            "display-brightness-ddcutil@themightydeity.github.com"
+            # "display-brightness-ddcutil@themightydeity.github.com"
           ];
         };
         "org/gnome/shell/extensions/system-monitor" = {

@@ -111,15 +111,12 @@
   # fonts.fontconfig.subpixel.rgba = "rgb";
   fonts.fontconfig.subpixel.lcdfilter = "light";
 
+  # Automatically sets up secure udev rules and creates the 'i2c' group
+  # For communication with monitors via ddcutil
+  hardware.i2c.enable = true;
+  
   services.udev.extraRules = ''
     # Disable wakeup from sleep from USB interrupt
     ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x8086", ATTR{device}=="0x9d2f", ATTR{power/wakeup}="disabled"
-
-    # I can't remember the purpose of this one
-    KERNEL=="i2c-[0-9]*", GROUP:="users"
-
-    # For my RTL-SDR TRNG project
-    SUBSYSTEM=="usb", ATTRS{idVendor}=="0bda", ATTRS{idProduct}=="2838", MODE:="0666"
-
   '';
 }
