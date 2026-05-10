@@ -23,6 +23,21 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    ## Non flakes
+
+    # Zellij
+    zellij-bin = {
+      url = "https://github.com/mateibarbu19/zellij/releases/download/v0.44.2-patch.1/zellij";
+      flake = false;
+    };
+
+    # Delta
+    deltaThemes = {
+      url = "https://raw.githubusercontent.com/dandavison/delta/0.18.2/themes.gitconfig";
+      flake = false;
+    };
+
+    # Rose Pine
     rosePineFlavors = {
       url = "github:rose-pine/yazi";
       flake = false;
@@ -31,12 +46,12 @@
       url = "github:rose-pine/tm-theme";
       flake = false;
     };
-    deltaThemes = {
-      url = "https://raw.githubusercontent.com/dandavison/delta/0.18.2/themes.gitconfig";
-      flake = false;
-    };
     rosePineGemini = {
       url = "https://raw.githubusercontent.com/schoffeniels/rose-pine-gemini-cli/refs/heads/main/themes/rose-pine-dawn.json";
+      flake = false;
+    };
+    rosePineZellij = {
+      url = "github:rose-pine/zellij";
       flake = false;
     };
   };

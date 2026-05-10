@@ -97,7 +97,9 @@
         "rosePineFlavors": "rosePineFlavors",
         "rosePineGemini": "rosePineGemini",
         "rosePineTextMateTheme": "rosePineTextMateTheme",
+        "rosePineZellij": "rosePineZellij",
         "unstable": "unstable",
+        "zellij-bin": "zellij-bin",
         "zen-browser": "zen-browser"
       }
     },
@@ -145,6 +147,22 @@
         "type": "github"
       }
     },
+    "rosePineZellij": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1762352818,
+        "narHash": "sha256-eilCRSweo0wk4z6snBWFC67NMVvytfDfJqGWVXg6QRc=",
+        "owner": "rose-pine",
+        "repo": "zellij",
+        "rev": "f4b7c27f9515d964a78e07da8332530a45f060d5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rose-pine",
+        "repo": "zellij",
+        "type": "github"
+      }
+    },
     "unstable": {
       "locked": {
         "lastModified": 1773389992,
@@ -159,6 +177,18 @@
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
+      }
+    },
+    "zellij-bin": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-5m6+ntNmwo/m+KaFY+JLR1d6FtmBsDuj4b+/JcGGA+Y=",
+        "type": "file",
+        "url": "https://github.com/mateibarbu19/zellij/releases/download/v0.44.2-patch.1/zellij"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/mateibarbu19/zellij/releases/download/v0.44.2-patch.1/zellij"
       }
     },
     "zen-browser": {

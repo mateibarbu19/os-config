@@ -29,6 +29,11 @@ in
           vars = args.vars;
         })
         programs/helix.nix
+        (import programs/zellij.nix {
+          inherit pkgs;
+          zellij-bin = args.zellij-bin;
+          rosePineZellij = args.rosePineZellij;
+        })
       ];
 
       # Template files

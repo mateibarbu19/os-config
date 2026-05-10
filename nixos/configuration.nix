@@ -62,22 +62,28 @@ in
       let
         zen-browser = parentArgs.zen-browser;
         firefox-addons = parentArgs.firefox-addons;
+        zellij-bin = parentArgs.zellij-bin;
         rosePineFlavors = parentArgs.rosePineFlavors;
         rosePineTextMateTheme = parentArgs.rosePineTextMateTheme;
         deltaThemes = parentArgs.deltaThemes;
         rosePineGemini = parentArgs.rosePineGemini;
+        rosePineZellij = parentArgs.rosePineZellij;
       in
       {
         inherit
+          unstablePkgs
           vars
+
           zen-browser
           firefox-addons
           switch-monitor-input-source
+          zellij-bin
+
+          deltaThemes
           rosePineFlavors
           rosePineTextMateTheme
-          deltaThemes
           rosePineGemini
-          unstablePkgs
+          rosePineZellij
           ;
       }
     ))
