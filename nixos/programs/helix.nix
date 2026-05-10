@@ -90,7 +90,7 @@
       flexoki_light_patched = {
         "inherits" = "flexoki_light";
         "ui.background" = {
-          fg = "tx";
+          fg = "tx-2";
           bg = "bg";
         };
       };
