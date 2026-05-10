@@ -4,6 +4,7 @@
 }@args:
 let
   potdSettings = builtins.readFile ./programs/picture-of-the-day.ini;
+  v = builtins.fromJSON (builtins.readFile args.rosePineGemini);
 in
 {
   home-manager = {
@@ -253,6 +254,22 @@ in
         ${potdSettings}
         EOF
       '';
+
+      programs.gemini-cli = {
+        enable = true;
+        package = args.unstablePkgs.gemini-cli;
+        settings = {
+          ui = {
+            theme = "rose-pine-dawn";
+            customThemes = v;
+          };
+          preferredEditor = "hx";
+          general.sessionRetention = {
+            enabled = true;
+            maxAge = "120d";
+          };
+        };
+      };
 
       home.stateVersion = args.vars.nixOSVersion;
     };

@@ -95,6 +95,7 @@
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "rosePineFlavors": "rosePineFlavors",
+        "rosePineGemini": "rosePineGemini",
         "rosePineTextMateTheme": "rosePineTextMateTheme",
         "unstable": "unstable",
         "zen-browser": "zen-browser"
@@ -114,6 +115,18 @@
         "owner": "rose-pine",
         "repo": "yazi",
         "type": "github"
+      }
+    },
+    "rosePineGemini": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-oiN1+RrN7NYbJZ/q4BTX+B0EULZiCsQbqNlHpunAneQ=",
+        "type": "file",
+        "url": "https://raw.githubusercontent.com/schoffeniels/rose-pine-gemini-cli/refs/heads/main/themes/rose-pine-dawn.json"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://raw.githubusercontent.com/schoffeniels/rose-pine-gemini-cli/refs/heads/main/themes/rose-pine-dawn.json"
       }
     },
     "rosePineTextMateTheme": {

@@ -35,6 +35,10 @@
       url = "https://raw.githubusercontent.com/dandavison/delta/0.18.2/themes.gitconfig";
       flake = false;
     };
+    rosePineGemini = {
+      url = "https://raw.githubusercontent.com/schoffeniels/rose-pine-gemini-cli/refs/heads/main/themes/rose-pine-dawn.json";
+      flake = false;
+    };
   };
 
   outputs =
