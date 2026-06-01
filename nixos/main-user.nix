@@ -47,8 +47,6 @@ in
       eyedropper
       # gnomeExtensions.brightness-control-using-ddcutil
 
-      easyeffects
-
       ffmpeg
 
       # Disk Usage Analyzer

@@ -29,6 +29,7 @@ let
     desktopName = "Custom URL Router";
     exec = "${url-router}/bin/url-router %U";
     terminal = false;
+    noDisplay = true;
     type = "Application";
     categories = [ "Network" "WebBrowser" ];
     mimeTypes = [
