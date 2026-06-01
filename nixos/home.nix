@@ -34,6 +34,7 @@ in
           zellij-bin = args.zellij-bin;
           rosePineZellij = args.rosePineZellij;
         })
+        ./programs/url-router.nix
       ];
 
       # Template files
@@ -273,6 +274,36 @@ in
             enabled = true;
             maxAge = "120d";
           };
+        };
+      };
+
+      xdg.mimeApps = {
+        enable = true;
+        defaultApplications = {
+          "application/x-7z-compressed" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-7z-compressed-tar" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-bzip" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-bzip-compressed-tar" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-compress" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-compressed-tar" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-cpio" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-gzip" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-lha" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-lzip" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-lzip-compressed-tar" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-lzma" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-lzma-compressed-tar" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-tar" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-tarz" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-xar" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-xz" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-xz-compressed-tar" = [ "org.gnome.FileRoller.desktop" ];
+          "application/zip" = [ "org.gnome.FileRoller.desktop" ];
+          "application/gzip" = [ "org.gnome.FileRoller.desktop" ];
+          "application/bzip2" = [ "org.gnome.FileRoller.desktop" ];
+          "application/vnd.rar" = [ "org.gnome.FileRoller.desktop" ];
+          "application/zstd" = [ "org.gnome.FileRoller.desktop" ];
+          "application/x-zstd-compressed-tar" = [ "org.gnome.FileRoller.desktop" ];
         };
       };
 
