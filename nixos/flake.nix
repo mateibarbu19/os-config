@@ -6,13 +6,13 @@
   description = "Matei's NixOS Config";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    flatpaks.url = "github:in-a-dil-emma/declarative-flatpak/v4.1.1";
+    flatpaks.url = "github:in-a-dil-emma/declarative-flatpak/latest";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -33,7 +33,7 @@
 
     # Delta
     deltaThemes = {
-      url = "https://raw.githubusercontent.com/dandavison/delta/0.18.2/themes.gitconfig";
+      url = "https://raw.githubusercontent.com/dandavison/delta/0.19.2/themes.gitconfig";
       flake = false;
     };
 

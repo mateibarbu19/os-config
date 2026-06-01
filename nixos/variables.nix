@@ -1,5 +1,5 @@
 {
-  nixOSVersion = "25.11";
+  nixOSVersion = "26.05";
 
   system = "x86_64-linux";
   hostName = "nixos";

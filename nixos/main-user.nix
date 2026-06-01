@@ -41,7 +41,6 @@ in
       # A visual software center for NixOS
       # nix-software-center
 
-      gnome-solanum
       gnome-pomodoro
       eyedropper
       # gnomeExtensions.brightness-control-using-ddcutil
@@ -83,13 +82,6 @@ in
       # python313Packages.python-lsp-ruff
       # ruff
       # python313Packages.jedi-language-server
-
-      # llvmPackages_latest.clang
-      # llvmPackages_latest.clang-tools
-      # bear
-      # compiledb
-      # gnumake
-      # gdb
 
       # Online tools
       ungoogled-chromium

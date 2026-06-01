@@ -341,59 +341,59 @@
   programs.firefox = {
     enable = true;
 
-    nativeMessagingHosts = [ pkgs.firefoxpwa ];
+    # nativeMessagingHosts = [ pkgs.firefoxpwa ];
   };
 
-  programs.firefoxpwa = {
-    enable = true;
-    profiles = {
-      "01KM3VBE0VG1Z5B0CK0KSBX0V8" = {
-        name = "Test profile";
+  # programs.firefoxpwa = {
+  #   enable = true;
+  #   profiles = {
+  #     "01KM3VBE0VG1Z5B0CK0KSBX0V8" = {
+  #       name = "Test profile";
 
-        sites."01KM3VHKRKMC1NDR8B1PAREBDR" = {
-          name = "MDN Web Docs";
-          url = "https://developer.mozilla.org/";
-          manifestUrl = "https://developer.mozilla.org/manifest.f42880861b394dd4dc9b.json";
+  #       sites."01KM3VHKRKMC1NDR8B1PAREBDR" = {
+  #         name = "MDN Web Docs";
+  #         url = "https://developer.mozilla.org/";
+  #         manifestUrl = "https://developer.mozilla.org/manifest.f42880861b394dd4dc9b.json";
 
-          settings = {
-            manifest = {
-              background_color = "#ffffff";
-              theme_color = "#000000";
-            };
-          };
+  #         settings = {
+  #           manifest = {
+  #             background_color = "#ffffff";
+  #             theme_color = "#000000";
+  #           };
+  #         };
 
-          desktopEntry = {
-            enable = true;
+  #         desktopEntry = {
+  #           enable = true;
 
-            icon = pkgs.fetchurl {
-              url = "https://developer.mozilla.org/favicon-192x192.png";
-              sha256 = "0p8zgf2ba48l2pq1gjcffwzmd9kfmj9qc0v7zpwf2qd54fndifxr";
-            };
-          };
-        };
-      };
+  #           icon = pkgs.fetchurl {
+  #             url = "https://developer.mozilla.org/favicon-192x192.png";
+  #             sha256 = "0p8zgf2ba48l2pq1gjcffwzmd9kfmj9qc0v7zpwf2qd54fndifxr";
+  #           };
+  #         };
+  #       };
+  #     };
 
-      "01KM3X9Q1H5285KV8CWC9J37AT".sites."01KM3X9Q70R1T08P1XG30SJ6FA" = {
-          name = "Teams 2";
-          url = "https://teams.microsoft.com/v2/";
-          manifestUrl = "https://teams.microsoft.com/v2/manifest.json";
+  #     "01KM3X9Q1H5285KV8CWC9J37AT".sites."01KM3X9Q70R1T08P1XG30SJ6FA" = {
+  #         name = "Teams 2";
+  #         url = "https://teams.microsoft.com/v2/";
+  #         manifestUrl = "https://teams.microsoft.com/v2/manifest.json";
 
-          settings = {
-            manifest = {
-              background_color = "#ffffff";
-              theme_color = "#ebebeb";
-            };
-          };
+  #         settings = {
+  #           manifest = {
+  #             background_color = "#ffffff";
+  #             theme_color = "#ebebeb";
+  #           };
+  #         };
 
-          desktopEntry = {
-            enable = true;
+  #         desktopEntry = {
+  #           enable = true;
 
-            icon = pkgs.fetchurl {
-              url = "https://statics.teams.cdn.office.net/evergreen-assets/icons/windows/teams-icon-pwa-v2025-192.png";
-              sha256 = "sha256-4AFuKBLMZp9duee79MAvrzegooh4vhAuGcQnOfZOj80=";
-            };
-          };
-      };
-    };
-  };
+  #           icon = pkgs.fetchurl {
+  #             url = "https://statics.teams.cdn.office.net/evergreen-assets/icons/windows/teams-icon-pwa-v2025-192.png";
+  #             sha256 = "sha256-4AFuKBLMZp9duee79MAvrzegooh4vhAuGcQnOfZOj80=";
+  #           };
+  #         };
+  #     };
+  #   };
+  # };
 }

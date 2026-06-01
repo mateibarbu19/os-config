@@ -178,7 +178,7 @@ in
     # Nix tools
     nil # language server
     nixd # language server
-    nixfmt-rfc-style # formatter
+    nixfmt # formatter
     cachix # community caches
 
     # Shell environment
