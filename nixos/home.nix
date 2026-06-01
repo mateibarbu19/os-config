@@ -184,7 +184,7 @@ in
         enable = true;
         enableDefaultConfig = false;
 
-        matchBlocks = {
+        settings = {
           "fep" = {
             user = args.vars.fepUser;
             hostname = "fep.grid.pub.ro";
