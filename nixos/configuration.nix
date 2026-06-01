@@ -50,14 +50,20 @@ in
           ;
       }
     ))
-    (import ./main-user.nix {
-      inherit
-        pkgs
-        unstablePkgs
-        lib
-        vars
-        ;
-    })
+    (import ./main-user.nix (
+      let
+        nix-software-center = parentArgs.nix-software-center;
+      in
+      {
+        inherit
+          pkgs
+          unstablePkgs
+          lib
+          vars
+          nix-software-center
+          ;
+      }
+    ))
     (import ./home.nix (
       let
         zen-browser = parentArgs.zen-browser;

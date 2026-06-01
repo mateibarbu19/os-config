@@ -12,6 +12,7 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-software-center.url = "github:snowfallorg/nix-software-center";
     flatpaks.url = "github:in-a-dil-emma/declarative-flatpak/latest";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";

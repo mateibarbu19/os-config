@@ -2,12 +2,14 @@
   pkgs,
   unstablePkgs,
   lib,
+  vars,
+  nix-software-center,
   ...
 }@args:
 let
   iconPath = "/var/lib/AccountsService/icons/${args.vars.mainUsername}";
   userConfigPath = "/var/lib/AccountsService/users/${args.vars.mainUsername}";
-  iconSource = ./images/profile_picture.jpg; 
+  iconSource = ./images/profile_picture.jpg;
 in
 {
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -39,7 +41,7 @@ in
       delta # also colorful diff
 
       # A visual software center for NixOS
-      # nix-software-center
+      nix-software-center.packages.${vars.system}.nix-software-center
 
       gnome-pomodoro
       eyedropper
