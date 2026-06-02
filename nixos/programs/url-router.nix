@@ -18,7 +18,6 @@ let
     else
       # 3. Fallback for all other URLs
       # IMPORTANT: Do not use xdg-open here, or you will create an infinite loop!
-      # Replace firefox with your preferred default browser if different.
       exec zen-beta "$URL"
     fi
   '';
