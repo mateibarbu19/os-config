@@ -274,6 +274,11 @@ in
             enabled = true;
             maxAge = "120d";
           };
+          security = {
+            auth = {
+              selectedType = "oauth-personal";
+            };
+          };
         };
       };
 
