@@ -86,6 +86,8 @@ in
       # Online tools
       ungoogled-chromium
 
+      unstablePkgs.antigravity-cli
+
       mission-center
     ];
   };
