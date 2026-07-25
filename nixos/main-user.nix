@@ -89,6 +89,10 @@ in
       unstablePkgs.antigravity-cli
 
       mission-center
+
+      # For Logitech devices
+      solaar
+      
     ];
   };
 
