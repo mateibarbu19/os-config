@@ -2,8 +2,8 @@
 # Rebuild. Switch. And active on next login.
 sudo nixos-rebuild switch --flake .#
 
-# Rebuild. Switch. Ephemeral.
-sudo nixos-rebuild switch --flake .#
+# Rebuild. Test. Ephemeral.
+sudo nixos-rebuild test --flake .#
 
 # List Generations
 nix profile history --profile /nix/var/nix/profiles/system
