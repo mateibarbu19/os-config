@@ -4,6 +4,11 @@
     enable = true;
     defaultEditor = true;
 
+    extraPackages = with pkgs; [
+      marksman
+      pandoc
+    ];
+
     settings = {
       theme = lib.mkDefault "flexoki_light_patched";
 
@@ -83,6 +88,19 @@
         name = "nix";
         auto-format = true;
         formatter.command = "${pkgs.nixfmt}/bin/nixfmt";
+      }
+
+      {
+        name = "markdown";
+        auto-format = false;
+        formatter = {
+          command = "${pkgs.pandoc}/bin/pandoc";
+          args = [
+            "--from=gfm"
+            "--to=gfm"
+            "--wrap=auto"
+          ];
+        };
       }
     ];
 
