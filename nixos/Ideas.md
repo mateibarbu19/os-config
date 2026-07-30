@@ -7,7 +7,7 @@
 - Starship not in the Linux Console
 - Declarative extension enabling
   - In Gnome:
-    - https://nixos.wiki/wiki/GNOME#Managing_extensions
+    - <https://nixos.wiki/wiki/GNOME#Managing_extensions>
     - home-manager: programs.gnome-shell.extensions
   - In Firefox
 - Firefox to be alike to Zen
