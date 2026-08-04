@@ -261,25 +261,25 @@ in
         EOF
       '';
 
-      programs.gemini-cli = {
+      programs.antigravity-cli = {
         enable = true;
-        package = args.unstablePkgs.gemini-cli;
-        settings = {
-          ui = {
-            theme = "rose-pine-dawn";
-            customThemes = v;
-          };
-          preferredEditor = "hx";
-          general.sessionRetention = {
-            enabled = true;
-            maxAge = "120d";
-          };
-          security = {
-            auth = {
-              selectedType = "oauth-personal";
-            };
-          };
-        };
+        package = args.unstablePkgs.antigravity-cli;
+        # settings = {
+        #   ui = {
+        #     theme = "rose-pine-dawn";
+        #     customThemes = v;
+        #   };
+        #   preferredEditor = "hx";
+        #   general.sessionRetention = {
+        #     enabled = true;
+        #     maxAge = "120d";
+        #   };
+        #   security = {
+        #     auth = {
+        #       selectedType = "oauth-personal";
+        #     };
+        #   };
+        # };
       };
 
       xdg.mimeApps = {
