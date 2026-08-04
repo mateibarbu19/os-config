@@ -85,6 +85,7 @@ in
       # python313Packages.jedi-language-server
 
       # Online tools
+      teams-for-linux
       ungoogled-chromium
 
       mission-center
