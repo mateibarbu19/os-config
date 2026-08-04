@@ -25,6 +25,7 @@ in
       "networkmanager"
       "wheel"
       "i2c"
+      "dialout"
     ];
 
     packages = with pkgs; [
