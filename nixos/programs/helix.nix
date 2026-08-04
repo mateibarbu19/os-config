@@ -6,7 +6,7 @@
 
     extraPackages = with pkgs; [
       marksman
-      pandoc
+      prettier
     ];
 
     settings = {
@@ -94,11 +94,15 @@
         name = "markdown";
         auto-format = false;
         formatter = {
-          command = "${pkgs.pandoc}/bin/pandoc";
+          command = "${pkgs.prettier}/bin/prettier";
           args = [
-            "--from=gfm"
-            "--to=gfm"
-            "--wrap=auto"
+            "--parser"
+            "markdown"
+            "--write"
+            "--print-width"
+            "80"
+            "--prose-wrap"
+            "always"
           ];
         };
       }
