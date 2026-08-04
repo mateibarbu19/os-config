@@ -261,6 +261,7 @@ in
         EOF
       '';
 
+      # AI
       programs.antigravity-cli = {
         enable = true;
         package = args.unstablePkgs.antigravity-cli;
@@ -280,6 +281,11 @@ in
         #     };
         #   };
         # };
+      };
+
+      programs.claude-code = {
+        enable = true;
+        package = args.unstablePkgs.claude-code;
       };
 
       xdg.mimeApps = {
