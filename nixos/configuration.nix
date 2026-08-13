@@ -287,6 +287,7 @@ in
         # "io.github.dvlv.boxbuddyrs"      # Manage distroboxes
         # "de.schmidhuberj.tubefeeder"     # watch YT videos
         "flathub:app/de.swsnr.pictureoftheday/x86_64/stable" # Change my wallpaper based on online sources
+        "flathub:app/com.discordapp.Discord/x86_64/stable"
       ];
 
       # Optional: Automatically update Flatpaks when you run nixos-rebuild switch
