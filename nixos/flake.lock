@@ -50,6 +50,75 @@
         "type": "github"
       }
     },
+    "flexoki-sublime": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1700674231,
+        "narHash": "sha256-37vCNLR3pMwzsDVekZmQbJF1YUV3PxVqgtTPhRs7KRk=",
+        "owner": "kepano",
+        "repo": "flexoki-sublime",
+        "rev": "833158b0db434eec5adf5282ee148ef7e873afc6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kepano",
+        "repo": "flexoki-sublime",
+        "type": "github"
+      }
+    },
+    "flexokiGitui": {
+      "inputs": {
+        "flexoki-sublime": "flexoki-sublime",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1786651749,
+        "narHash": "sha256-rzRXX3Z0OIMvRsH8aigbM5qcSb1cVXpQKw9lvq0GLPo=",
+        "owner": "mateibarbu19",
+        "repo": "flexoki-gitui",
+        "rev": "ce091bfd1c45d240099863dd32fe5e7f6f8dcda8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mateibarbu19",
+        "repo": "flexoki-gitui",
+        "type": "github"
+      }
+    },
+    "flexokiVivid": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786639713,
+        "narHash": "sha256-oy9XnqRqNQ7u3bEgTgXtNykGhQlbuc3EXsECq3lObjg=",
+        "owner": "mateibarbu19",
+        "repo": "flexoki-vivid",
+        "rev": "fe1df7ecae9eeaebbe754d3c013f77c3e10f6e1f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mateibarbu19",
+        "repo": "flexoki-vivid",
+        "type": "github"
+      }
+    },
+    "flexokiYazi": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1772019268,
+        "narHash": "sha256-yIYkgGeYHl3/iRrKzsPnh2nw0PwPD/LYm1BQMy/yvBw=",
+        "owner": "gosxrgxx",
+        "repo": "flexoki-light.yazi",
+        "rev": "1b1e67795a3eeec51aec0be74b3d76316be9aaa1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gosxrgxx",
+        "repo": "flexoki-light.yazi",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -154,6 +223,9 @@
         "deltaThemes": "deltaThemes",
         "firefox-addons": "firefox-addons",
         "flatpaks": "flatpaks",
+        "flexokiGitui": "flexokiGitui",
+        "flexokiVivid": "flexokiVivid",
+        "flexokiYazi": "flexokiYazi",
         "home-manager": "home-manager",
         "nix-software-center": "nix-software-center",
         "nixpkgs": "nixpkgs_2",

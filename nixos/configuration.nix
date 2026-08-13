@@ -26,6 +26,23 @@ let
     text = builtins.readFile ./programs/switch_monitor_input_source.sh;
   };
 
+  themes = import ./themes.nix {
+    inherit pkgs;
+    inherit (parentArgs)
+      rosePineFlavors
+      rosePineTextMateTheme
+      rosePineZellij
+      rosePineGemini
+
+      flexokiGitui
+      flexokiVivid
+      flexokiYazi
+      ;
+  };
+  theme =
+    themes.${vars.theme}
+      or (throw "variables.nix asks for the theme '${vars.theme}', which themes.nix does not define. Known themes: ${lib.concatStringsSep ", " (builtins.attrNames themes)}.");
+
 in
 {
   # This copies the flake source into the Nix store and
@@ -69,11 +86,7 @@ in
         zen-browser = parentArgs.zen-browser;
         firefox-addons = parentArgs.firefox-addons;
         zellij-bin = parentArgs.zellij-bin;
-        rosePineFlavors = parentArgs.rosePineFlavors;
-        rosePineTextMateTheme = parentArgs.rosePineTextMateTheme;
         deltaThemes = parentArgs.deltaThemes;
-        rosePineGemini = parentArgs.rosePineGemini;
-        rosePineZellij = parentArgs.rosePineZellij;
       in
       {
         inherit
@@ -86,10 +99,8 @@ in
           zellij-bin
 
           deltaThemes
-          rosePineFlavors
-          rosePineTextMateTheme
-          rosePineGemini
-          rosePineZellij
+
+          theme
           ;
       }
     ))

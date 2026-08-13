@@ -55,6 +55,20 @@
       url = "github:rose-pine/zellij";
       flake = false;
     };
+
+    # Flexoki
+    flexokiGitui = {
+      url = "github:mateibarbu19/flexoki-gitui";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    flexokiVivid = {
+      url = "github:mateibarbu19/flexoki-vivid";
+      flake = false;
+    };
+    flexokiYazi = {
+      url = "github:gosxrgxx/flexoki-light.yazi";
+      flake = false;
+    };
   };
 
   outputs =
@@ -77,5 +91,7 @@
           args.flatpaks.nixosModules.default
         ];
       };
+
+      formatter.${vars.system} = nixpkgs.legacyPackages.${vars.system}.nixfmt-tree;
     };
 }

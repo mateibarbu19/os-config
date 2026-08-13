@@ -1,3 +1,6 @@
+# Takes the theme name from themes.nix, curried, so that both the main user and
+# root get the same one without either having to override the other.
+themeName:
 { pkgs, lib, ... }:
 {
   programs.helix = {
@@ -10,7 +13,7 @@
     ];
 
     settings = {
-      theme = lib.mkDefault "flexoki_light_patched";
+      theme = lib.mkDefault themeName;
 
       editor = {
         shell = [

@@ -1,7 +1,8 @@
 {
   pkgs,
   zellij-bin,
-  rosePineZellij,
+  # The `zellij` entry of the active theme in themes.nix.
+  theme,
   ...
 }:
 let
@@ -26,7 +27,11 @@ let
       chmod +x $out/bin/zellij
     '';
   };
-  rosePineTheme = builtins.readFile "${rosePineZellij}/dist/rose-pine-dawn.kdl";
+  # zjstatus draws the status bar itself and never consults the Zellij theme,
+  # so its colors have to be handed over one by one.
+  c = theme.status;
+  # Every mode other than normal and locked shares one chip.
+  modeChip = "#[bg=${c.muted},fg=${c.base}] {name} ";
 in
 {
   programs.zellij = {
@@ -34,7 +39,7 @@ in
     package = zellij-custom;
 
     themes = {
-      rose-pine-dawn = rosePineTheme;
+      "${theme.name}" = theme.kdl;
     };
 
     extraConfig = ''
@@ -65,7 +70,7 @@ in
           zjstatus-hints
       }
 
-      theme "rose-pine-dawn"
+      theme "${theme.name}"
       session_serialization false
       show_startup_tips false
     '';
@@ -81,27 +86,27 @@ in
 
                         format_left   "{pipe_zjstatus_hints}"
                         format_center "{tabs}"
-                        format_right  "#[fg=#89B4FA,bold] {session} {mode}  "
+                        format_right  "#[fg=${c.accent},bold] {session} {mode}  "
                         format_space  ""
 
-                        mode_normal        "#[fg=#56949f,bold]normal "
-                        mode_locked        "#[fg=#d7827e,bold]locked "
+                        mode_normal        "#[fg=${c.normal},bold]normal "
+                        mode_locked        "#[fg=${c.locked},bold]locked "
 
-                        mode_resize        "#[bg=#9893a5,fg=#faf4ed] {name} "
-                        mode_pane          "#[bg=#9893a5,fg=#faf4ed] {name} "
-                        mode_tab           "#[bg=#9893a5,fg=#faf4ed] {name} "
-                        mode_scroll        "#[bg=#9893a5,fg=#faf4ed] {name} "
-                        mode_enter_search  "#[bg=#9893a5,fg=#faf4ed] {name} "
-                        mode_search        "#[bg=#9893a5,fg=#faf4ed] {name} "
-                        mode_rename_tab    "#[bg=#9893a5,fg=#faf4ed] {name} "
-                        mode_rename_pane   "#[bg=#9893a5,fg=#faf4ed] {name} "
-                        mode_session       "#[bg=#9893a5,fg=#faf4ed] {name} "
-                        mode_move          "#[bg=#9893a5,fg=#faf4ed] {name} "
-                        mode_prompt        "#[bg=#9893a5,fg=#faf4ed] {name} "
-                        mode_tmux          "#[bg=#9893a5,fg=#faf4ed] {name} "
+                        mode_resize        "${modeChip}"
+                        mode_pane          "${modeChip}"
+                        mode_tab           "${modeChip}"
+                        mode_scroll        "${modeChip}"
+                        mode_enter_search  "${modeChip}"
+                        mode_search        "${modeChip}"
+                        mode_rename_tab    "${modeChip}"
+                        mode_rename_pane   "${modeChip}"
+                        mode_session       "${modeChip}"
+                        mode_move          "${modeChip}"
+                        mode_prompt        "${modeChip}"
+                        mode_tmux          "${modeChip}"
 
-                        tab_normal   "#[fg=#9893a5] {name} "
-                        tab_active   "#[fg=#575279,bold] {name} "
+                        tab_normal   "#[fg=${c.muted}] {name} "
+                        tab_active   "#[fg=${c.text},bold] {name} "
 
                         pipe_zjstatus_hints_format "{output}"
                     }

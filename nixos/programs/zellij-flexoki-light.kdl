@@ -1,0 +1,148 @@
+// Flexoki Light for Zellij.
+//
+// Zellij ships a built-in `flexoki-dark` but no light counterpart, so this is
+// the missing half. Rather than invert the dark theme -- which would put the
+// 400 accent series on paper, where it is too pale -- the component layout is
+// taken from rose-pine/zellij's `rose-pine-dawn`, a light theme whose contrast
+// is already known to work, with each Rose Pine role resolved to its Flexoki
+// Light equivalent:
+//
+//   $text          -> tx            #100F0F      $love -> red-600      #AF3029
+//   $base          -> bg            #FFFCF0      $gold -> yellow-600   #AD8301
+//   $highlightLow  -> bg-2          #F2F0E5      $rose -> magenta-600  #A02F6F
+//   $highlightMed  -> ui-2          #DAD8CE      $pine -> blue-600     #205EA6
+//                                                $foam -> cyan-600     #24837B
+//                                                $iris -> purple-600   #5E409D
+//
+// Per the Flexoki spec light themes use the 600 accent step. `background 0`
+// means "inherit the terminal's", not black.
+themes {
+  flexoki-light {
+    text_unselected {
+      base 16 15 15
+      background 242 240 229
+      emphasis_0 160 47 111
+      emphasis_1 36 131 123
+      emphasis_2 32 94 166
+      emphasis_3 94 64 157
+    }
+    text_selected {
+      base 16 15 15
+      background 218 216 206
+      emphasis_0 160 47 111
+      emphasis_1 36 131 123
+      emphasis_2 32 94 166
+      emphasis_3 94 64 157
+    }
+    ribbon_selected {
+      base 242 240 229
+      background 32 94 166
+      emphasis_0 173 131 1
+      emphasis_1 160 47 111
+      emphasis_2 94 64 157
+      emphasis_3 36 131 123
+    }
+    ribbon_unselected {
+      base 255 252 240
+      background 16 15 15
+      emphasis_0 173 131 1
+      emphasis_1 160 47 111
+      emphasis_2 94 64 157
+      emphasis_3 36 131 123
+    }
+    table_title {
+      base 32 94 166
+      background 0 0 0
+      emphasis_0 160 47 111
+      emphasis_1 36 131 123
+      emphasis_2 32 94 166
+      emphasis_3 94 64 157
+    }
+    table_cell_selected {
+      base 16 15 15
+      background 218 216 206
+      emphasis_0 160 47 111
+      emphasis_1 36 131 123
+      emphasis_2 32 94 166
+      emphasis_3 94 64 157
+    }
+    table_cell_unselected {
+      base 16 15 15
+      background 242 240 229
+      emphasis_0 160 47 111
+      emphasis_1 36 131 123
+      emphasis_2 32 94 166
+      emphasis_3 94 64 157
+    }
+    list_selected {
+      base 16 15 15
+      background 218 216 206
+      emphasis_0 160 47 111
+      emphasis_1 36 131 123
+      emphasis_2 32 94 166
+      emphasis_3 94 64 157
+    }
+    list_unselected {
+      base 16 15 15
+      background 242 240 229
+      emphasis_0 160 47 111
+      emphasis_1 36 131 123
+      emphasis_2 32 94 166
+      emphasis_3 94 64 157
+    }
+    // Not in the Rose Pine template, but the built-in flexoki-dark sets it so
+    // unfocused borders sit back. tx-3 is the light tone for that job.
+    frame_unselected {
+      base 183 181 172
+      background 0 0 0
+      emphasis_0 160 47 111
+      emphasis_1 36 131 123
+      emphasis_2 94 64 157
+      emphasis_3 0 0 0
+    }
+    frame_selected {
+      base 32 94 166
+      background 0 0 0
+      emphasis_0 160 47 111
+      emphasis_1 36 131 123
+      emphasis_2 94 64 157
+      emphasis_3 0 0 0
+    }
+    frame_highlight {
+      base 160 47 111
+      background 0 0 0
+      emphasis_0 160 47 111
+      emphasis_1 160 47 111
+      emphasis_2 160 47 111
+      emphasis_3 160 47 111
+    }
+    exit_code_success {
+      base 32 94 166
+      background 0 0 0
+      emphasis_0 36 131 123
+      emphasis_1 242 240 229
+      emphasis_2 94 64 157
+      emphasis_3 32 94 166
+    }
+    exit_code_error {
+      base 175 48 41
+      background 0 0 0
+      emphasis_0 173 131 1
+      emphasis_1 0 0 0
+      emphasis_2 0 0 0
+      emphasis_3 0 0 0
+    }
+    multiplayer_user_colors {
+      player_1 94 64 157
+      player_2 32 94 166
+      player_3 160 47 111
+      player_4 173 131 1
+      player_5 36 131 123
+      player_6 175 48 41
+      player_7 0 0 0
+      player_8 0 0 0
+      player_9 0 0 0
+      player_10 0 0 0
+    }
+  }
+}

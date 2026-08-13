@@ -4,7 +4,8 @@
 }@args:
 let
   potdSettings = builtins.readFile ./programs/picture-of-the-day.ini;
-  v = builtins.fromJSON (builtins.readFile args.rosePineGemini);
+  # The active entry of themes.nix, picked by `vars.theme`.
+  theme = args.theme;
 in
 {
   home-manager = {
@@ -28,11 +29,11 @@ in
           firefox-addons = args.firefox-addons;
           vars = args.vars;
         })
-        programs/helix.nix
+        (import programs/helix.nix theme.helix)
         (import programs/zellij.nix {
           inherit pkgs;
           zellij-bin = args.zellij-bin;
-          rosePineZellij = args.rosePineZellij;
+          theme = theme.zellij;
         })
         ./programs/url-router.nix
       ];
@@ -52,17 +53,20 @@ in
       # The terminal of choice
       programs.wezterm = {
         enable = true;
-        extraConfig = builtins.readFile ./programs/wezterm.lua;
+        extraConfig = ''
+          local flavor = ${lib.generators.toLua { } theme.wezterm}
+
+        ''
+        + builtins.readFile ./programs/wezterm.lua;
         enableBashIntegration = true;
       };
 
       # The shell of choice
+      # NOTE: LS_COLORS is not set here. programs.vivid below owns it, through
+      # its own Nushell integration, so that it follows the active theme.
       programs.nushell = {
         enable = true;
         configFile.source = ./programs/config.nu;
-        environmentVariables = {
-          LS_COLORS = lib.hm.nushell.mkNushellInline "vivid generate rose-pine-dawn";
-        };
       };
 
       # Keeping things consistent with the base shell
@@ -77,8 +81,10 @@ in
 
       programs.vivid = {
         enable = true;
-        activeTheme = "rose-pine-dawn";
+        activeTheme = theme.vivid.name;
+        inherit (theme.vivid) themes;
         enableBashIntegration = true;
+        enableNushellIntegration = true;
       };
 
       programs.starship = {
@@ -106,12 +112,11 @@ in
         enable = true;
 
         config = {
-          theme = "rose-pine-dawn";
+          theme = theme.tmTheme.name;
         };
         themes = {
-          rose-pine-dawn = {
-            src = args.rosePineTextMateTheme;
-            file = "dist/rose-pine-dawn.tmTheme";
+          "${theme.tmTheme.name}" = {
+            inherit (theme.tmTheme) src file;
           };
         };
       };
@@ -125,16 +130,22 @@ in
         enable = true;
         enableNushellIntegration = true;
 
+        # Yazi has no single "use this flavor" key. It keeps one flavor per
+        # terminal background and picks between them by what it detects, and an
+        # unknown key is dropped in silence rather than flagged, which just
+        # leaves the built-in theme in place. Both themes here are light, so
+        # both slots name the same flavor and a misdetected background still
+        # lands on the right one.
         theme = {
           flavor = {
-            use = "rose-pine-dawn";
+            light = theme.yazi.name;
+            dark = theme.yazi.name;
           };
+        }
+        // theme.yazi.extraTheme;
 
-          icon =
-            (builtins.fromTOML (builtins.readFile "${args.rosePineFlavors}/themes/rose-pine-dawn.toml")).icon;
-        };
         flavors = {
-          rose-pine-dawn = "${args.rosePineFlavors}/flavors/rose-pine-dawn.yazi";
+          "${theme.yazi.name}" = theme.yazi.src;
         };
       };
 
@@ -166,18 +177,21 @@ in
           line-numbers = true;
           side-by-side = true;
           features = "hoopoe";
-          syntax-theme = "rose-pine-dawn";
+          syntax-theme = theme.tmTheme.name;
 
         };
       };
 
-      home.file."${config.xdg.configHome}/gitui/rose-pine-dawn.tmTheme" = {
-        source = "${args.rosePineTextMateTheme}/dist/rose-pine-dawn.tmTheme";
+      # GitUI colors its file and blame views from a .tmTheme it looks up by the
+      # name its theme.ron carries, next to theme.ron itself. Without it, it
+      # falls back to a built-in and silently stops matching everything else.
+      home.file."${config.xdg.configHome}/gitui/${theme.tmTheme.name}.tmTheme" = {
+        source = "${theme.tmTheme.src}/${theme.tmTheme.file}";
       };
 
       programs.gitui = {
         enable = true;
-        theme = ./programs/gitui_theme.ron;
+        inherit (theme.gitui) theme;
       };
 
       programs.ssh = {
@@ -265,10 +279,12 @@ in
       programs.antigravity-cli = {
         enable = true;
         package = args.unstablePkgs.antigravity-cli;
+        # NOTE: whenever this comes back, it only has colors under Rose Pine --
+        # themes.nix leaves `antigravity` null for Flexoki.
         # settings = {
         #   ui = {
-        #     theme = "rose-pine-dawn";
-        #     customThemes = v;
+        #     theme = theme.antigravity.name;
+        #     customThemes = theme.antigravity.customThemes;
         #   };
         #   preferredEditor = "hx";
         #   general.sessionRetention = {
@@ -322,13 +338,11 @@ in
     };
 
   home-manager.users.root =
-    { lib, ... }:
+    { ... }:
     {
       imports = [
-        programs/helix.nix
+        (import programs/helix.nix theme.helix)
       ];
-
-      programs.helix.settings.theme = lib.mkOverride 0 "rose_pine_dawn";
 
       home.stateVersion = args.vars.nixOSVersion;
     };
