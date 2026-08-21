@@ -45,10 +45,12 @@ in
       nix-software-center.packages.${vars.system}.nix-software-center
 
       gnome-pomodoro
+      gnome-sound-recorder
       eyedropper
       # gnomeExtensions.brightness-control-using-ddcutil
 
       ffmpeg
+      krita
 
       # Disk Usage Analyzer
       baobab
