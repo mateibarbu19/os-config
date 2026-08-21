@@ -2,6 +2,14 @@
 # root get the same one without either having to override the other.
 themeName:
 { pkgs, lib, ... }:
+let
+  # Reflows a commit body to 72 columns. Unlike `fmt`, it leaves the subject,
+  # git's own comments, the `commit -v` diff, trailers and code blocks alone.
+  gitCommitFmt = pkgs.writeTextFile {
+    name = "git-commit-fmt.awk";
+    text = builtins.readFile ./git-commit-fmt.awk;
+  };
+in
 {
   programs.helix = {
     enable = true;
@@ -10,6 +18,7 @@ themeName:
     extraPackages = with pkgs; [
       marksman
       prettier
+      google-java-format
     ];
 
     settings = {
@@ -106,6 +115,32 @@ themeName:
             "80"
             "--prose-wrap"
             "always"
+          ];
+        };
+      }
+
+      {
+        name = "git-commit";
+        auto-format = false;
+        formatter = {
+          command = "${pkgs.gawk}/bin/awk";
+          args = [
+            "-v"
+            "width=72"
+            "-f"
+            "${gitCommitFmt}"
+          ];
+        };
+      }
+
+      {
+        name = "java";
+        auto-format = false;
+        formatter = {
+          command = "${pkgs.google-java-format}/bin/google-java-format";
+          args = [
+            "--aosp"
+            "-"
           ];
         };
       }
