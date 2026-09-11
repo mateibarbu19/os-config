@@ -47,7 +47,7 @@ in
       gnome-pomodoro
       gnome-sound-recorder
       eyedropper
-      # gnomeExtensions.brightness-control-using-ddcutil
+      gnomeExtensions.brightness-control-using-ddcutil
 
       ffmpeg
       krita

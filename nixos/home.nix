@@ -258,7 +258,7 @@ in
             "system-monitor@gnome-shell-extensions.gcampax.github.com"
             "status-icons@gnome-shell-extensions.gcampax.github.com"
             "pomodoro@arun.codito.in"
-            # "display-brightness-ddcutil@themightydeity.github.com"
+            "display-brightness-ddcutil@themightydeity.github.com"
           ];
         };
         "org/gnome/shell/extensions/system-monitor" = {
