@@ -1,4 +1,7 @@
-{ ... }:
+{
+  vars,
+  ...
+}:
 {
   nix = {
     settings = {
@@ -8,6 +11,8 @@
         "nix-command"
         "flakes"
       ];
+
+      trusted-users = [ "${vars.mainUsername}" ];
 
       # substituters = [
       #   "https://install.determinate.systems"
