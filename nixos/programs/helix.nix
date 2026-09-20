@@ -9,17 +9,47 @@ let
     name = "git-commit-fmt.awk";
     text = builtins.readFile ./git-commit-fmt.awk;
   };
+
+  # Helix cannot open the `jdt://` URIs that jdtls answers with when you jump
+  # into a decompiled class. This proxy sits in front of jdtls, dumps those
+  # class contents to a file under /tmp and rewrites the URI to point there.
+  jdtls-wrapper = pkgs.buildGoModule {
+    pname = "jdtls-wrapper";
+    version = "25.11.1";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "quantonganh";
+      repo = "jdtls-wrapper";
+      tag = "25.11.1";
+      hash = "sha256-5TOdb1TMHytyVAoD/rnY/173KZZRGJa5DA11DApTTGo=";
+    };
+
+    # A single main.go with no third-party imports, so nothing to vendor.
+    vendorHash = null;
+
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+
+    # # It spawns plain `jdtls`, which is not otherwise on Helix's PATH.
+    # postInstall = ''
+    #   wrapProgram $out/bin/jdtls-wrapper \
+    #     --prefix PATH : ${lib.makeBinPath [ pkgs.jdt-language-server ]}
+    # '';
+  };
 in
 {
   programs.helix = {
     enable = true;
     defaultEditor = true;
 
-    extraPackages = with pkgs; [
+    extraPackages = [
+      jdtls-wrapper
+    ]
+    ++ (with pkgs; [
       marksman
       prettier
       google-java-format
-    ];
+      typstyle
+    ]);
 
     settings = {
       theme = lib.mkDefault themeName;
@@ -95,6 +125,16 @@ in
       };
     };
 
+    # Helix's built-in Java config launches `jdtls` directly, so the wrapper
+    # only gets used if that name is pointed at it.
+    languages.language-server.jdtls = {
+      command = "${jdtls-wrapper}/bin/jdtls-wrapper";
+      config = {
+        java.inlayHints.parameterNames.enabled = "all";
+        extendedClientCapabilities.classFileContentsSupport = true;
+      };
+    };
+
     languages.language = [
       {
         name = "nix";
@@ -141,6 +181,19 @@ in
           args = [
             "--aosp"
             "-"
+          ];
+        };
+      }
+
+      {
+        name = "typst";
+        auto-format = true;
+        formatter = {
+          command = "${pkgs.typstyle}/bin/typstyle";
+          args = [
+            "--line-width"
+            "100"
+            "--wrap-text"
           ];
         };
       }
