@@ -1,3 +1,5 @@
+# Matei's NixOS config
+
 ```bash
 # Rebuild. Switch. And active on next login.
 sudo nixos-rebuild switch --flake .#
