@@ -116,7 +116,13 @@
   hardware.i2c.enable = true;
   
   services.udev.extraRules = ''
-    # Disable wakeup from sleep from USB interrupt
-    ACTION=="add", SUBSYSTEM=="pci", ATTR{vendor}=="0x8086", ATTR{device}=="0x9d2f", ATTR{power/wakeup}="disabled"
+    # Keychron hidraw (Needed for WebUSB access on Chromium browsers)
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3434", TAG+="uaccess"
+
+    # Configure USB
+    SUBSYSTEM=="usb",  ATTRS{idVendor}=="3434", ATTRS{idProduct}=="0a38", TAG+="uaccess"
+
+    # Configure 2.4GHz
+    SUBSYSTEM=="usb",  ATTRS{idVendor}=="3434", ATTRS{idProduct}=="d030", TAG+="uaccess"
   '';
 }
